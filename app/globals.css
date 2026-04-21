@@ -1,9 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 
 :root {
   /* Nexus Colors */
@@ -46,7 +44,7 @@
 html, body {
   height: 100%;
   width: 100%;
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-inter), sans-serif;
   background-color: var(--bg-main);
   color: var(--text-main);
   transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1), color 0.5s ease;
@@ -54,7 +52,7 @@ html, body {
 }
 
 h1, h2, h3, .font-heading {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-space), sans-serif;
 }
 
 /* Aurora Mesh Background */

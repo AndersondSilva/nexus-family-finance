@@ -1,4 +1,8 @@
 import "./globals.css";
+import { Inter, Space_Grotesk } from 'next/font/google';
+
+const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
+const spaceGrotesk = Space_Grotesk({ subsets: ['latin'], variable: '--font-space' });
 
 export const metadata = {
   title: "Nexus Family Finance | Controle Financeiro Inteligente",
@@ -9,7 +13,7 @@ import { LocaleProvider } from "@/context/LocaleContext";
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="pt-br">
+    <html lang="pt-br" className={`${inter.variable} ${spaceGrotesk.variable}`}>
       <head>
         <meta name="theme-color" content="#050510" />
       </head>
