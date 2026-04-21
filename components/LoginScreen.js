@@ -76,6 +76,17 @@ export default function LoginScreen({ onLogin, theme, toggleTheme }) {
             <button className="glass px-8 py-3 rounded-2xl font-bold text-xs hover:bg-white/5 transition-all text-[#94a3b8] uppercase tracking-widest">
               Watch Demo
             </button>
+            
+            {/* Cláusula de Soberania de Dados */}
+            <div className="mt-6 p-4 rounded-2xl bg-[var(--primary)]/5 border border-white/5 space-y-2">
+              <div className="flex items-center gap-2 text-[var(--primary)]">
+                <Shield size={14} className="animate-pulse" />
+                <span className="text-[10px] font-black uppercase tracking-[0.2em]">Sovereign Retention Clause</span>
+              </div>
+              <p className="text-[10px] text-[var(--text-muted)] leading-relaxed font-bold italic">
+                "Para manter a pureza e integridade do Nexus, registros inativos por mais de 180 sóis (6 meses) serão devolvidos ao vácuo e apagados permanentemente."
+              </p>
+            </div>
           </div>
 
           <div className="mt-12 flex items-center gap-8 text-[var(--text-muted)] text-sm">

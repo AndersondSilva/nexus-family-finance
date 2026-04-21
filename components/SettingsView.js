@@ -44,7 +44,7 @@ export default function SettingsView({ user }) {
     setMessage({ type: '', text: '' });
 
     try {
-      // Criar convite na coleção independente
+      // 1. Criar convite na coleção independente
       await addDoc(collection(db, 'invitations'), {
         fromEmail: user.email,
         fromUid: user.uid,
@@ -52,8 +52,19 @@ export default function SettingsView({ user }) {
         status: 'pending',
         createdAt: serverTimestamp()
       });
+
+      // 2. Disparar e-mail automático via API Sota
+      try {
+        await fetch('/api/invite', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ toEmail: emailToInvite, fromEmail: user.email })
+        });
+      } catch (e) {
+        console.error("Auto-email failure, but DB saved:", e);
+      }
       
-      setMessage({ type: 'success', text: `Convite enviado para ${emailToInvite}!` });
+      setMessage({ type: 'success', text: `Sucesso! Convite enviado automaticamente para ${emailToInvite}.` });
       setInviteEmail('');
     } catch (error) {
       console.error("Link error:", error);
