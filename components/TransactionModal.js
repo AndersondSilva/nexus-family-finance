@@ -177,8 +177,5 @@ export default function TransactionModal({ isOpen, onClose, onAdd }) {
         </form>
       </motion.div>
     </div>
-        </form>
-      </motion.div>
-    </div>
   );
 }
