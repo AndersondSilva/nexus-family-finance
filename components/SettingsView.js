@@ -57,7 +57,11 @@ export default function SettingsView({ user }) {
       setInviteEmail('');
     } catch (error) {
       console.error("Link error:", error);
-      setMessage({ type: 'error', text: 'Erro ao enviar convite.' });
+      if (error.code === 'permission-denied') {
+        setMessage({ type: 'error', text: 'Permissão Negada: Você precisa atualizar as regras do seu Firebase Console (veja o Walkthrough).' });
+      } else {
+        setMessage({ type: 'error', text: 'Erro ao enviar convite.' });
+      }
     }
     setLoading(false);
   };
