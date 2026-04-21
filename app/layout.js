@@ -6,7 +6,17 @@ const spaceGrotesk = Space_Grotesk({ subsets: ['latin'], variable: '--font-space
 
 export const metadata = {
   title: "Nexus Family Finance | Controle Financeiro Inteligente",
-  description: "Gestão financeira premium para você e sua família. Controle individual e compartilhado com segurança e elegância.",
+  description: "O controle financeiro do futuro para você e sua família.",
+  manifest: "/manifest.json",
+  themeColor: "#0A0C11",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "Nexus Finance",
+  },
+  icons: {
+    apple: "/apple-touch-icon.png",
+  },
 };
 
 import { LocaleProvider } from "@/context/LocaleContext";

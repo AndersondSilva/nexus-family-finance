@@ -8,7 +8,7 @@ export default function AIDoc() {
       </div>
       
       <div className="flex items-center gap-4 mb-10">
-        <div className="p-4 bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] text-white rounded-2xl shadow-glow">
+        <div className="p-4 btn-neon-sota rounded-2xl shadow-glow">
           <Cpu size={28} />
         </div>
         <div>

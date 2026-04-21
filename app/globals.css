@@ -125,15 +125,23 @@ h1, h2, h3, .font-heading {
 .text-neon-blue { color: var(--accent); text-shadow: var(--glow-accent); }
 .text-neon-pink { color: var(--secondary); text-shadow: var(--glow-secondary); }
 
-.btn-neon-blue {
-  background: var(--primary);
-  box-shadow: var(--glow-primary);
-  transition: all 0.3s ease;
+.btn-neon-sota {
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  color: #000 !important;
+  font-weight: 900;
+  box-shadow: var(--glow-accent);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.btn-neon-blue:hover {
-  filter: brightness(1.2);
-  box-shadow: 0 0 30px rgba(59, 130, 246, 0.5);
+.btn-neon-sota:hover {
+  filter: brightness(1.1);
+  transform: scale(1.02);
+  box-shadow: 0 0 30px rgba(0, 242, 255, 0.5);
+}
+
+.bg-success-sota {
+  background-color: var(--success) !important;
+  color: #000 !important;
 }
 
 /* Custom Scrollbar */

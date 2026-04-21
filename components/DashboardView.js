@@ -159,7 +159,7 @@ export default function DashboardView({ user, onAddClick }) {
               <button className="glass-interactive p-3 rounded-xl text-[var(--text-muted)]"><Filter size={18} /></button>
               <button 
                 onClick={onAddClick}
-                className="bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] text-white px-6 py-3 rounded-xl shadow-glow font-bold text-sm flex items-center gap-2 hover:scale-105 active:scale-95 transition-all"
+                className="btn-neon-sota px-6 py-3 rounded-xl shadow-glow font-black text-xs flex items-center gap-2 hover:scale-105 active:scale-95 transition-all uppercase tracking-widest"
               >
                 <Plus size={18} /> {t.newEntry}
               </button>

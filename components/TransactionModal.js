@@ -87,7 +87,7 @@ export default function TransactionModal({ isOpen, onClose, onAdd }) {
             </button>
             <button 
               onClick={() => setFormData({...formData, type: 'income'})}
-              className={`px-4 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all ${formData.type === 'income' ? 'bg-[var(--success)] text-black shadow-glow' : 'text-[var(--text-muted)]'}`}
+              className={`px-4 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all ${formData.type === 'income' ? 'bg-success-sota shadow-glow' : 'text-[var(--text-muted)]'}`}
             >
               Receita
             </button>
@@ -246,8 +246,8 @@ export default function TransactionModal({ isOpen, onClose, onAdd }) {
             onClick={() => onAdd(formData)}
             className={`md:col-span-2 font-black py-5 rounded-2xl shadow-glow hover:scale-[1.02] active:scale-[0.98] transition-all mt-4 text-sm uppercase tracking-widest ${
               formData.type === 'income' 
-              ? 'bg-[var(--success)] text-black' 
-              : 'bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] text-white'
+              ? 'bg-success-sota' 
+              : 'btn-neon-sota'
             }`}
           >
             Confirmar Operação Soberana

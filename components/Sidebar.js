@@ -37,7 +37,7 @@ export default function Sidebar({ user, onLogout, activeView, setActiveView }) {
             onClick={() => setActiveView(item.id)}
             className={`w-full flex items-center gap-4 px-5 py-4 rounded-2xl transition-all duration-300 group ${
               activeView === item.id 
-              ? 'bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] text-white shadow-glow' 
+              ? 'btn-neon-sota shadow-glow' 
               : 'text-[var(--text-muted)] hover:bg-white/[0.03] hover:text-[var(--text-main)]'
             }`}
           >
