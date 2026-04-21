@@ -96,7 +96,7 @@ export default function SettingsView({ user }) {
         </div>
         <div>
           <h1 className="text-4xl font-black font-heading tracking-tighter uppercase italic">Sovereign Settings</h1>
-          <p className="text-[var(--text-muted)] text-xs font-bold tracking-widest uppercase opacity-50">Nexus V1.5.0 Deployment</p>
+          <p className="text-[var(--text-muted)] text-xs font-bold tracking-widest uppercase opacity-50">Nexus V1.6.2 Deployment</p>
         </div>
       </div>
 

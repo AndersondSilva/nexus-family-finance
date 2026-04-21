@@ -66,7 +66,11 @@ export default function TransactionModal({ isOpen, onClose, onAdd }) {
         animate={{ scale: 1, opacity: 1, y: 0 }}
         className="glass w-full max-w-2xl p-8 relative border-white/10 shadow-3xl overflow-y-auto max-h-[90vh]"
       >
-        <button onClick={onClose} className="absolute top-6 right-6 text-[var(--text-muted)] hover:text-white transition-colors">
+        <button 
+          onClick={onClose} 
+          data-tooltip="Fechar formulário sem salvar."
+          className="absolute top-6 right-6 text-[var(--text-muted)] hover:text-white transition-colors"
+        >
           <X size={24} />
         </button>
 

@@ -156,7 +156,12 @@ export default function DashboardView({ user, onAddClick }) {
               <Activity className="text-[var(--accent)]" /> Performance de Fluxo
             </h2>
             <div className="flex gap-3">
-              <button className="glass-interactive p-3 rounded-xl text-[var(--text-muted)]"><Filter size={18} /></button>
+              <button 
+                data-tooltip="Filtrar lançamentos por categoria ou data."
+                className="glass-interactive p-3 rounded-xl text-[var(--text-muted)]"
+              >
+                <Filter size={18} />
+              </button>
               <button 
                 onClick={onAddClick}
                 data-tooltip="Criar uma nova receita ou despesa no sistema."
