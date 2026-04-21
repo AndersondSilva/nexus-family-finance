@@ -5,8 +5,8 @@ Este documento serve como a **"Constituição Técnica"** do projeto. Ele foi pr
 ---
 
 ## 📑 Visão Geral da Versão
-- **Versão Atual**: 1.1.0 (Stitch Evolution)
-- **Status**: Estável / Produção SOTA
+- **Versão Atual**: 1.2.0 (I18n Evolution)
+- **Status**: Estável / Global SOTA
 - **Autor**: Engenharia Sênior (Antigravity AI)
 
 ---
@@ -72,6 +72,12 @@ Se você for solicitado a mudar a aparência:
 ---
 
 ## 📜 Histórico de Versões
+
+### [1.2.0] - 2026-04-21
+- **I18n Architecture**: Implementação de sistema multilingue PT-BR, PT-PT e EN-US.
+- **Auto-Currency**: Detecção automática de local para formatação de moeda (EUR, BRL, USD).
+- **LocaleContext**: Novo contexto global para gerenciamento de tradução e estados regionais.
+- **Navbar Selector**: Adição de seletor visual de países/moedas na navegação superior.
 
 ### [1.1.0] - 2026-04-21
 - **Design Evolution**: Migração para o padrão "Nexus-Stitch" inspirado no Google Stitch.
