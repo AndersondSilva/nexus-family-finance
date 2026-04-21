@@ -244,7 +244,11 @@ export default function TransactionModal({ isOpen, onClose, onAdd }) {
           <button 
             type="button"
             onClick={() => onAdd(formData)}
-            className={`md:col-span-2 text-white font-black py-5 rounded-2xl shadow-glow hover:scale-[1.02] active:scale-[0.98] transition-all mt-4 text-sm uppercase tracking-widest ${formData.type === 'income' ? 'bg-[var(--success)]' : 'bg-gradient-to-r from-[var(--primary)] to-[var(--accent)]'}`}
+            className={`md:col-span-2 font-black py-5 rounded-2xl shadow-glow hover:scale-[1.02] active:scale-[0.98] transition-all mt-4 text-sm uppercase tracking-widest ${
+              formData.type === 'income' 
+              ? 'bg-[var(--success)] text-black' 
+              : 'bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] text-white'
+            }`}
           >
             Confirmar Operação Soberana
           </button>
