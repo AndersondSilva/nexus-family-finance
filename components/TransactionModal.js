@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { X, DollarSign, Tag, Users, User, Calendar, FileText, Plus, Minus, Calculator, Wallet, Briefcase, Gift, Umbrella } from 'lucide-react';
+import { X, DollarSign, Tag, Users, User, Calendar, FileText, Plus, Minus, Calculator, Wallet, Briefcase, Gift, Umbrella, Clock, CreditCard } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function TransactionModal({ isOpen, onClose, onAdd }) {
