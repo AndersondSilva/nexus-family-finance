@@ -5,8 +5,8 @@ Este documento serve como a **"Constituição Técnica"** do projeto. Ele foi pr
 ---
 
 ## 📑 Visão Geral da Versão
-- **Versão Atual**: 1.0.0 (SOTA 2026)
-- **Status**: Estável / Produção
+- **Versão Atual**: 1.1.0 (Stitch Evolution)
+- **Status**: Estável / Produção SOTA
 - **Autor**: Engenharia Sênior (Antigravity AI)
 
 ---
@@ -72,6 +72,12 @@ Se você for solicitado a mudar a aparência:
 ---
 
 ## 📜 Histórico de Versões
+
+### [1.1.0] - 2026-04-21
+- **Design Evolution**: Migração para o padrão "Nexus-Stitch" inspirado no Google Stitch.
+- **Aurora Mesh**: Implementação de fundos dinâmicos com gradientes Aurora e Dot Grid orbital.
+- **Hero Update**: Landing page com animações cinematográficas e elementos 3D flutuantes.
+- **Glassmorphism 2.0**: Aumento do blur para 40px-60px e otimização de contraste SOTA.
 
 ### [1.0.0] - 2026-04-21
 - Inicialização do projeto com Next.js.

@@ -1,13 +1,24 @@
-import { Sun, Moon, Bell, Search, Command } from 'lucide-react';
+import { useLocale } from '@/context/LocaleContext';
+import { Sun, Moon, Bell, Search, Command, Globe } from 'lucide-react';
+import { useState } from 'react';
 
 export default function Navbar({ user, theme, toggleTheme }) {
+  const { locale, setLocale, t } = useLocale();
+  const [showLocales, setShowLocales] = useState(false);
+
+  const languages = [
+    { code: 'pt-BR', name: 'Brasil', flag: '🇧🇷' },
+    { code: 'pt-PT', name: 'Portugal', flag: '🇵🇹' },
+    { code: 'en-US', name: 'USA', flag: '🇺🇸' },
+  ];
+
   return (
     <nav className="flex items-center justify-between px-10 py-8 z-30">
       <div className="flex items-center gap-4 bg-white/[0.03] border border-white/10 px-5 py-3 rounded-2xl backdrop-blur-xl flex-1 max-w-lg shadow-xl group focus-within:border-[var(--primary)] transition-all">
         <Search className="text-[var(--text-muted)] w-5 h-5 group-focus-within:text-[var(--primary)]" />
         <input 
           type="text" 
-          placeholder="Busca inteligente (Alt + K)" 
+          placeholder={`${t.dashboard}... (Alt + K)`}
           className="bg-transparent border-none outline-none text-sm w-full text-[var(--text-main)] font-medium"
         />
         <div className="hidden sm:flex items-center gap-1 bg-white/5 px-2 py-1 rounded-md border border-white/10">
@@ -17,6 +28,35 @@ export default function Navbar({ user, theme, toggleTheme }) {
       </div>
 
       <div className="flex items-center gap-6 ml-10">
+        {/* Language Selector */}
+        <div className="relative">
+          <button 
+            onClick={() => setShowLocales(!showLocales)}
+            className="glass-interactive p-3 rounded-xl text-[var(--text-muted)] flex items-center gap-2"
+          >
+            <Globe size={20} />
+            <span className="text-xs font-bold uppercase">{locale.split('-')[1]}</span>
+          </button>
+          
+          {showLocales && (
+            <div className="absolute top-full right-0 mt-2 w-48 glass p-2 z-50 animate-fade-in">
+              {languages.map((lang) => (
+                <button
+                  key={lang.code}
+                  onClick={() => {
+                    setLocale(lang.code);
+                    setShowLocales(false);
+                  }}
+                  className={`w-full flex items-center justify-between px-4 py-3 rounded-xl hover:bg-white/5 transition-all text-sm font-medium ${locale === lang.code ? 'text-[var(--accent)] bg-white/5' : ''}`}
+                >
+                  <span>{lang.flag} {lang.name}</span>
+                  {locale === lang.code && <div className="w-1.5 h-1.5 bg-[var(--accent)] rounded-full shadow-glow" />}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+
         <div className="flex items-center gap-2">
           <button className="glass-interactive p-3 rounded-xl text-[var(--text-muted)] relative">
             <Bell size={20} />

@@ -19,6 +19,7 @@ import {
   Filler
 } from 'chart.js';
 import AIDoc from '@/components/AIDoc';
+import { useLocale } from '@/context/LocaleContext';
 
 ChartJS.register(
   CategoryScale,
@@ -34,19 +35,20 @@ ChartJS.register(
 
 export default function DashboardView({ user, onAddClick }) {
   const [scope, setScope] = useState('family'); 
+  const { t, formatCurrency } = useLocale();
 
   const kpis = [
-    { title: 'Saldo Geral', value: 'R$ 15.420,00', icon: <TrendingUp size={20} />, color: 'var(--accent)', trend: '+12%', up: true },
-    { title: 'Despesas Mês', value: 'R$ 4.120,45', icon: <TrendingDown size={20} />, color: 'var(--danger)', trend: '-5%', up: false },
-    { title: 'Poupança', value: 'R$ 45.000,00', icon: <PiggyBank size={20} />, color: 'var(--success)', trend: '+R$ 2k', up: true },
-    { title: 'Dívidas', value: 'R$ 2.400,00', icon: <CreditCard size={20} />, color: 'var(--secondary)', trend: 'Estável', up: true },
+    { title: t.balance, rawValue: 15420, icon: <TrendingUp size={20} />, color: 'var(--accent)', trend: '+12%', up: true },
+    { title: t.expenses, rawValue: 4120.45, icon: <TrendingDown size={20} />, color: 'var(--danger)', trend: '-5%', up: false },
+    { title: t.savings, rawValue: 45000, icon: <PiggyBank size={20} />, color: 'var(--success)', trend: '+R$ 2k', up: true },
+    { title: t.debts, rawValue: 2400, icon: <CreditCard size={20} />, color: 'var(--secondary)', trend: 'Estável', up: true },
   ];
 
   const lineData = {
     labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'],
     datasets: [
       {
-        label: 'Receitas',
+        label: t.balance,
         data: [12000, 15000, 13000, 17000, 14000, 15420],
         borderColor: '#00f2ff',
         backgroundColor: 'rgba(0, 242, 255, 0.1)',
@@ -56,7 +58,7 @@ export default function DashboardView({ user, onAddClick }) {
         pointBorderColor: '#fff',
       },
       {
-        label: 'Despesas',
+        label: t.expenses,
         data: [8000, 9500, 7000, 11000, 8500, 4120],
         borderColor: '#ff00d6',
         backgroundColor: 'transparent',
@@ -90,7 +92,7 @@ export default function DashboardView({ user, onAddClick }) {
           <div className="flex items-center gap-2 text-xs font-bold text-[var(--accent)] uppercase tracking-widest mb-2">
             <Zap size={14} /> Dashboard Analytics
           </div>
-          <h1 className="text-4xl font-extrabold tracking-tighter font-heading sm:text-5xl">Relatório de Impacto</h1>
+          <h1 className="text-4xl font-extrabold tracking-tighter font-heading sm:text-5xl">{t.overview}</h1>
           <p className="text-[var(--text-muted)] mt-2 font-medium">
             Gerenciando fluxos para <span className="text-[var(--text-main)] font-bold">{scope === 'family' ? 'Família Silva' : user?.displayName}</span>
           </p>
@@ -102,14 +104,14 @@ export default function DashboardView({ user, onAddClick }) {
             className={`flex items-center gap-2 px-6 py-2.5 rounded-xl transition-all duration-300 ${scope === 'family' ? 'bg-white text-black shadow-2xl' : 'text-[var(--text-muted)] hover:text-white'}`}
           >
             <Users size={16} />
-            <span className="font-bold text-xs uppercase tracking-wider">Família</span>
+            <span className="font-bold text-xs uppercase tracking-wider">{t.family}</span>
           </button>
           <button 
             onClick={() => setScope('personal')}
             className={`flex items-center gap-2 px-6 py-2.5 rounded-xl transition-all duration-300 ${scope === 'personal' ? 'bg-white text-black shadow-2xl' : 'text-[var(--text-muted)] hover:text-white'}`}
           >
             <UserIcon size={16} />
-            <span className="font-bold text-xs uppercase tracking-wider">Pessoal</span>
+            <span className="font-bold text-xs uppercase tracking-wider">{t.personal}</span>
           </button>
         </div>
       </header>
@@ -135,7 +137,7 @@ export default function DashboardView({ user, onAddClick }) {
               </div>
             </div>
             <p className="text-xs font-bold text-[var(--text-muted)] uppercase tracking-widest">{kpi.title}</p>
-            <h3 className="text-3xl font-black mt-2 font-heading tracking-tight">{kpi.value}</h3>
+            <h3 className="text-3xl font-black mt-2 font-heading tracking-tight">{formatCurrency(kpi.rawValue)}</h3>
             
             {/* dynamic background glow */}
             <div 
@@ -159,7 +161,7 @@ export default function DashboardView({ user, onAddClick }) {
                 onClick={onAddClick}
                 className="bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] text-white px-6 py-3 rounded-xl shadow-glow font-bold text-sm flex items-center gap-2 hover:scale-105 active:scale-95 transition-all"
               >
-                <Plus size={18} /> Novo Registro
+                <Plus size={18} /> {t.newEntry}
               </button>
             </div>
           </div>
@@ -181,7 +183,7 @@ export default function DashboardView({ user, onAddClick }) {
 
         {/* Categories (Donut) */}
         <div className="glass p-10 flex flex-col">
-          <h2 className="text-2xl font-black font-heading tracking-tight mb-10">Distribuição</h2>
+          <h2 className="text-2xl font-black font-heading tracking-tight mb-10">{t.categories}</h2>
           <div className="flex-1 relative min-h-[300px]">
             <Doughnut 
               data={donutData}

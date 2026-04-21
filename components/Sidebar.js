@@ -1,13 +1,16 @@
 import { LayoutDashboard, TrendingUp, TrendingDown, PiggyBank, CreditCard, LogOut, ShoppingBag, Settings, HelpCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useLocale } from '@/context/LocaleContext';
 
 export default function Sidebar({ user, onLogout }) {
+  const { t, locale } = useLocale();
+
   const menuItems = [
-    { icon: <LayoutDashboard size={20} />, label: 'Overview', active: true },
+    { icon: <LayoutDashboard size={20} />, label: t.dashboard, active: true },
     { icon: <TrendingUp size={20} />, label: 'Analytics' },
-    { icon: <TrendingDown size={20} />, label: 'Expenses' },
-    { icon: <PiggyBank size={20} />, label: 'Savings' },
-    { icon: <CreditCard size={20} />, label: 'Debts' },
+    { icon: <TrendingDown size={20} />, label: t.expenses },
+    { icon: <PiggyBank size={20} />, label: t.savings },
+    { icon: <CreditCard size={20} />, label: t.debts },
     { icon: <ShoppingBag size={20} />, label: 'Wishlist' },
   ];
 
@@ -22,11 +25,11 @@ export default function Sidebar({ user, onLogout }) {
         <div className="bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] p-2 rounded-xl shadow-glow">
           <LayoutDashboard className="text-white w-6 h-6" />
         </div>
-        <span className="text-2xl font-bold tracking-tight font-heading">NEXUS</span>
+        <span className="text-2xl font-bold tracking-tight font-heading text-white">NEXUS</span>
       </div>
 
       <div className="space-y-1">
-        <p className="text-[10px] font-bold uppercase tracking-widest text-[var(--text-muted)] mb-4 px-4">Menu Principal</p>
+        <p className="text-[10px] font-bold uppercase tracking-widest text-[var(--text-muted)] mb-4 px-4">Menu</p>
         {menuItems.map((item, idx) => (
           <button 
             key={idx}
@@ -45,7 +48,7 @@ export default function Sidebar({ user, onLogout }) {
       </div>
 
       <div className="mt-10 space-y-1">
-        <p className="text-[10px] font-bold uppercase tracking-widest text-[var(--text-muted)] mb-4 px-4">Preferências</p>
+        <p className="text-[10px] font-bold uppercase tracking-widest text-[var(--text-muted)] mb-4 px-4">Preferences</p>
         {secondaryMenu.map((item, idx) => (
           <button 
             key={idx}
@@ -65,7 +68,7 @@ export default function Sidebar({ user, onLogout }) {
             alt="User avatar"
           />
           <div className="overflow-hidden">
-            <p className="text-sm font-bold truncate">{user?.displayName}</p>
+            <p className="text-sm font-bold truncate text-white">{user?.displayName}</p>
             <p className="text-[10px] text-[var(--text-muted)] truncate">{user?.email}</p>
           </div>
         </div>
@@ -74,7 +77,7 @@ export default function Sidebar({ user, onLogout }) {
           className="w-full flex items-center justify-center gap-3 py-4 rounded-2xl text-red-400 hover:bg-red-400/10 transition-all font-bold text-sm"
         >
           <LogOut size={18} />
-          Sair do Sistema
+          {locale === 'en-US' ? 'Logout' : 'Sair'}
         </button>
       </div>
     </aside>

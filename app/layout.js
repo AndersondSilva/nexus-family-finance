@@ -5,6 +5,8 @@ export const metadata = {
   description: "Gestão financeira premium para você e sua família. Controle individual e compartilhado com segurança e elegância.",
 };
 
+import { LocaleProvider } from "@/context/LocaleContext";
+
 export default function RootLayout({ children }) {
   return (
     <html lang="pt-br">
@@ -14,7 +16,9 @@ export default function RootLayout({ children }) {
       <body>
         <div className="aurora-bg" />
         <div className="dot-grid" />
-        {children}
+        <LocaleProvider>
+          {children}
+        </LocaleProvider>
       </body>
     </html>
   );
