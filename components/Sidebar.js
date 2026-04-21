@@ -7,6 +7,7 @@ export default function Sidebar({ user, onLogout, activeView, setActiveView }) {
 
   const menuItems = [
     { id: 'dashboard', icon: <LayoutDashboard size={20} />, label: t.dashboard },
+    { id: 'calendar', icon: <Calendar size={20} />, label: 'Calendário (Vencimentos)' },
     { id: 'analytics', icon: <TrendingUp size={20} />, label: 'Analytics' },
     { id: 'expenses', icon: <TrendingDown size={20} />, label: t.expenses },
     { id: 'savings', icon: <PiggyBank size={20} />, label: t.savings },
