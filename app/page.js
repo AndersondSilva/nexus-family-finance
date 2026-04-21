@@ -14,6 +14,7 @@ export default function Home() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [theme, setTheme] = useState('dark');
+  const [activeView, setActiveView] = useState('dashboard');
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
@@ -61,13 +62,35 @@ export default function Home() {
 
   return (
     <div className="flex min-h-screen bg-[var(--bg-main)] text-[var(--text-main)]">
-      <Sidebar user={user} onLogout={handleLogout} />
+      <Sidebar 
+        user={user} 
+        onLogout={handleLogout} 
+        activeView={activeView}
+        setActiveView={setActiveView}
+      />
       
       <div className="flex-1 flex flex-col">
         <Navbar user={user} theme={theme} toggleTheme={toggleTheme} />
         
         <main className="flex-1 p-6 md:p-8 overflow-y-auto">
-          <DashboardView user={user} onAddClick={() => setIsModalOpen(true)} />
+          {activeView === 'dashboard' && (
+            <DashboardView user={user} onAddClick={() => setIsModalOpen(true)} />
+          )}
+          {activeView !== 'dashboard' && (
+            <div className="flex flex-col items-center justify-center h-full space-y-4 animate-fade-in opacity-50">
+              <div className="p-8 rounded-full bg-white/5 border border-white/10">
+                <LayoutDashboard size={48} className="text-[var(--accent)]" />
+              </div>
+              <h2 className="text-2xl font-bold uppercase tracking-tighter">Vista em Desenvolvimento</h2>
+              <p className="text-[var(--text-muted)]">A seção <span className="text-white font-bold">{activeView.toUpperCase()}</span> estará disponível na v1.4.0</p>
+              <button 
+                onClick={() => setActiveView('dashboard')}
+                className="px-6 py-2 rounded-xl bg-white/10 hover:bg-white/20 transition-all font-bold text-xs uppercase"
+              >
+                Voltar ao Dashboard
+              </button>
+            </div>
+          )}
         </main>
 
         <TransactionModal 
