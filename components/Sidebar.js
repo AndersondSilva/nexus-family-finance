@@ -35,6 +35,7 @@ export default function Sidebar({ user, onLogout, activeView, setActiveView }) {
           <button 
             key={item.id}
             onClick={() => setActiveView(item.id)}
+            data-tooltip={`Ir para ${item.label}`}
             className={`w-full flex items-center gap-4 px-5 py-4 rounded-2xl transition-all duration-300 group ${
               activeView === item.id 
               ? 'btn-neon-sota shadow-glow' 

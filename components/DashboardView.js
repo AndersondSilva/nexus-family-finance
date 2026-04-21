@@ -159,6 +159,7 @@ export default function DashboardView({ user, onAddClick }) {
               <button className="glass-interactive p-3 rounded-xl text-[var(--text-muted)]"><Filter size={18} /></button>
               <button 
                 onClick={onAddClick}
+                data-tooltip="Criar uma nova receita ou despesa no sistema."
                 className="btn-neon-sota px-6 py-3 rounded-xl shadow-glow font-black text-xs flex items-center gap-2 hover:scale-105 active:scale-95 transition-all uppercase tracking-widest"
               >
                 <Plus size={18} /> {t.newEntry}

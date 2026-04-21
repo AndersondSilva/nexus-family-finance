@@ -244,6 +244,7 @@ export default function TransactionModal({ isOpen, onClose, onAdd }) {
           <button 
             type="button"
             onClick={() => onAdd(formData)}
+            data-tooltip="Salvar permanentemente este lançamento no seu registro financeiro."
             className={`md:col-span-2 font-black py-5 rounded-2xl shadow-glow hover:scale-[1.02] active:scale-[0.98] transition-all mt-4 text-sm uppercase tracking-widest ${
               formData.type === 'income' 
               ? 'bg-success-sota' 
