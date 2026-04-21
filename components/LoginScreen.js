@@ -49,15 +49,31 @@ export default function LoginScreen({ onLogin, theme, toggleTheme }) {
             {t.loginMsg}
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-4">
+          <div className="flex flex-col gap-4 max-w-sm">
             <button 
-              onClick={onLogin}
-              className="bg-white text-black px-8 py-5 rounded-2xl font-bold text-lg flex items-center justify-center gap-3 hover:scale-[1.05] transition-all shadow-2xl active:scale-95"
+              onClick={() => onLogin('google')}
+              className="bg-white text-black px-8 py-4 rounded-2xl font-bold text-sm flex items-center justify-center gap-3 hover:scale-[1.02] transition-all shadow-2xl active:scale-95 border border-white/10"
             >
-              <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" className="w-6 h-6" />
-              Login with Google
+              <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" className="w-5 h-5" />
+              Sign in with Google
             </button>
-            <button className="glass px-8 py-5 rounded-2xl font-bold text-lg hover:bg-white/5 transition-all text-white">
+            <div className="grid grid-cols-2 gap-4">
+              <button 
+                onClick={() => onLogin('apple')}
+                className="bg-[#000000] text-white px-4 py-4 rounded-2xl font-bold text-xs flex items-center justify-center gap-2 hover:bg-black/80 transition-all border border-white/10"
+              >
+                <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" alt="Apple" className="w-4 h-4 invert" />
+                Apple
+              </button>
+              <button 
+                onClick={() => onLogin('microsoft')}
+                className="bg-[#2F2F2F] text-white px-4 py-4 rounded-2xl font-bold text-xs flex items-center justify-center gap-2 hover:bg-[#3F3F3F] transition-all border border-white/10"
+              >
+                <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" alt="Microsoft" className="w-4 h-4" />
+                Microsoft
+              </button>
+            </div>
+            <button className="glass px-8 py-3 rounded-2xl font-bold text-xs hover:bg-white/5 transition-all text-[#94a3b8] uppercase tracking-widest">
               Watch Demo
             </button>
           </div>

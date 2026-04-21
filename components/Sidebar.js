@@ -1,4 +1,4 @@
-import { LayoutDashboard, TrendingUp, TrendingDown, PiggyBank, CreditCard, LogOut, ShoppingBag, Settings, HelpCircle } from 'lucide-react';
+import { LayoutDashboard, TrendingUp, TrendingDown, PiggyBank, CreditCard, LogOut, ShoppingBag, Settings, HelpCircle, Calendar, Sparkles } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useLocale } from '@/context/LocaleContext';
 
@@ -7,17 +7,17 @@ export default function Sidebar({ user, onLogout, activeView, setActiveView }) {
 
   const menuItems = [
     { id: 'dashboard', icon: <LayoutDashboard size={20} />, label: t.dashboard },
-    { id: 'calendar', icon: <Calendar size={20} />, label: 'Calendário (Vencimentos)' },
+    { id: 'calendar', icon: <Calendar size={20} />, label: 'Calendário' },
     { id: 'analytics', icon: <TrendingUp size={20} />, label: 'Analytics' },
+    { id: 'goals', icon: <Sparkles size={20} />, label: 'Meus Sonhos' },
     { id: 'expenses', icon: <TrendingDown size={20} />, label: t.expenses },
     { id: 'savings', icon: <PiggyBank size={20} />, label: t.savings },
     { id: 'debts', icon: <CreditCard size={20} />, label: t.debts },
-    { id: 'wishlist', icon: <ShoppingBag size={20} />, label: 'Wishlist' },
   ];
 
   const secondaryMenu = [
-    { id: 'settings', icon: <Settings size={18} />, label: 'Settings' },
-    { id: 'support', icon: <HelpCircle size={18} />, label: 'Support' },
+    { id: 'settings', icon: <Settings size={18} />, label: 'Configurações' },
+    { id: 'support', icon: <HelpCircle size={18} />, label: 'Suporte' },
   ];
 
   return (

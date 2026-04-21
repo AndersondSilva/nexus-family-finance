@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { auth, googleProvider } from '@/lib/firebase';
+import { auth, googleProvider, appleProvider, microsoftProvider } from '@/lib/firebase';
 import { signInWithPopup, onAuthStateChanged, signOut } from 'firebase/auth';
 import { LayoutDashboard, TrendingUp, TrendingDown, PiggyBank, CreditCard, LogOut, Sun, Moon } from 'lucide-react';
 import Navbar from '@/components/Navbar';
@@ -12,6 +12,8 @@ import TransactionModal from '@/components/TransactionModal';
 import CalendarView from '@/components/CalendarView';
 import AnnualProjection from '@/components/AnnualProjection';
 import FinancialTips from '@/components/FinancialTips';
+import SettingsView from '@/components/SettingsView';
+import GoalsManager from '@/components/GoalsManager';
 
 export default function Home() {
   const [user, setUser] = useState(null);
@@ -41,9 +43,16 @@ export default function Home() {
     document.documentElement.setAttribute('data-theme', newTheme);
   };
 
-  const handleLogin = async () => {
+  const handleLogin = async (providerName) => {
+    let provider;
+    switch(providerName) {
+      case 'apple': provider = appleProvider; break;
+      case 'microsoft': provider = microsoftProvider; break;
+      default: provider = googleProvider;
+    }
+    
     try {
-      await signInWithPopup(auth, googleProvider);
+      await signInWithPopup(auth, provider);
     } catch (error) {
       console.error("Login failed:", error);
     }
@@ -109,7 +118,13 @@ export default function Home() {
                </div>
              </div>
           )}
-          {!['dashboard', 'calendar', 'analytics'].includes(activeView) && (
+          {activeView === 'goals' && (
+            <GoalsManager />
+          )}
+          {activeView === 'settings' && (
+            <SettingsView user={user} />
+          )}
+          {!['dashboard', 'calendar', 'analytics', 'goals', 'settings', 'expenses', 'savings', 'debts'].includes(activeView) && (
             <div className="flex flex-col items-center justify-center h-full space-y-4 animate-fade-in opacity-50">
               <div className="p-8 rounded-full bg-white/5 border border-white/10">
                 <LayoutDashboard size={48} className="text-[var(--accent)]" />
