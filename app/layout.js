@@ -11,7 +11,11 @@ export default function RootLayout({ children }) {
       <head>
         <meta name="theme-color" content="#050510" />
       </head>
-      <body>{children}</body>
+      <body>
+        <div className="aurora-bg" />
+        <div className="dot-grid" />
+        {children}
+      </body>
     </html>
   );
 }

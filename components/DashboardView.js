@@ -3,9 +3,8 @@ import { motion } from 'framer-motion';
 import { 
   TrendingUp, TrendingDown, PiggyBank, CreditCard, 
   Plus, Filter, Users, User as UserIcon,
-  Activity, ArrowUpRight, ArrowDownRight
+  Activity, ArrowUpRight, ArrowDownRight, Zap
 } from 'lucide-react';
-import AIDoc from '@/components/AIDoc';
 import { Line, Doughnut } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -19,6 +18,7 @@ import {
   ArcElement,
   Filler
 } from 'chart.js';
+import AIDoc from '@/components/AIDoc';
 
 ChartJS.register(
   CategoryScale,
@@ -33,13 +33,13 @@ ChartJS.register(
 );
 
 export default function DashboardView({ user, onAddClick }) {
-  const [scope, setScope] = useState('family'); // 'family' | 'personal'
+  const [scope, setScope] = useState('family'); 
 
   const kpis = [
-    { title: 'Saldo Geral', value: 'R$ 15.420,00', icon: <TrendingUp />, color: 'var(--primary)', trend: '+12%', up: true },
-    { title: 'Despesas Mês', value: 'R$ 4.120,45', icon: <TrendingDown />, color: 'var(--danger)', trend: '-5%', up: false },
-    { title: 'Poupança', value: 'R$ 45.000,00', icon: <PiggyBank />, color: 'var(--success)', trend: '+R$ 2k', up: true },
-    { title: 'Dívidas', value: 'R$ 2.400,00', icon: <CreditCard />, color: 'var(--warning)', trend: 'Estável', up: true },
+    { title: 'Saldo Geral', value: 'R$ 15.420,00', icon: <TrendingUp size={20} />, color: 'var(--accent)', trend: '+12%', up: true },
+    { title: 'Despesas Mês', value: 'R$ 4.120,45', icon: <TrendingDown size={20} />, color: 'var(--danger)', trend: '-5%', up: false },
+    { title: 'Poupança', value: 'R$ 45.000,00', icon: <PiggyBank size={20} />, color: 'var(--success)', trend: '+R$ 2k', up: true },
+    { title: 'Dívidas', value: 'R$ 2.400,00', icon: <CreditCard size={20} />, color: 'var(--secondary)', trend: 'Estável', up: true },
   ];
 
   const lineData = {
@@ -48,15 +48,17 @@ export default function DashboardView({ user, onAddClick }) {
       {
         label: 'Receitas',
         data: [12000, 15000, 13000, 17000, 14000, 15420],
-        borderColor: '#3b82f6',
-        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+        borderColor: '#00f2ff',
+        backgroundColor: 'rgba(0, 242, 255, 0.1)',
         fill: true,
         tension: 0.4,
+        pointBackgroundColor: '#00f2ff',
+        pointBorderColor: '#fff',
       },
       {
         label: 'Despesas',
         data: [8000, 9500, 7000, 11000, 8500, 4120],
-        borderColor: '#ff4d4d',
+        borderColor: '#ff00d6',
         backgroundColor: 'transparent',
         borderDash: [5, 5],
         tension: 0.4,
@@ -81,85 +83,87 @@ export default function DashboardView({ user, onAddClick }) {
   };
 
   return (
-    <div className="space-y-8 animate-fade-in">
-      {/* Header with Switch */}
-      <header className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+    <div className="space-y-10 animate-fade-in pb-12">
+      {/* Header com Switch Minimalista */}
+      <header className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-2 border-b border-white/[0.05]">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Painel de Controle</h1>
-          <p className="text-[var(--text-muted)] flex items-center gap-2 mt-1">
-            {scope === 'family' ? <Users size={16} /> : <UserIcon size={16} />}
-            Visualizando gastos {scope === 'family' ? 'da Família' : 'Pessoais'}
+          <div className="flex items-center gap-2 text-xs font-bold text-[var(--accent)] uppercase tracking-widest mb-2">
+            <Zap size={14} /> Dashboard Analytics
+          </div>
+          <h1 className="text-4xl font-extrabold tracking-tighter font-heading sm:text-5xl">Relatório de Impacto</h1>
+          <p className="text-[var(--text-muted)] mt-2 font-medium">
+            Gerenciando fluxos para <span className="text-[var(--text-main)] font-bold">{scope === 'family' ? 'Família Silva' : user?.displayName}</span>
           </p>
         </div>
 
-        <div className="flex items-center gap-3 bg-[var(--bg-card)] p-1 rounded-2xl glass">
+        <div className="flex items-center gap-2 bg-white/5 p-1.5 rounded-2xl border border-white/10 backdrop-blur-md">
           <button 
             onClick={() => setScope('family')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-xl transition-all ${scope === 'family' ? 'bg-[var(--primary)] text-white' : 'text-[var(--text-muted)]'}`}
+            className={`flex items-center gap-2 px-6 py-2.5 rounded-xl transition-all duration-300 ${scope === 'family' ? 'bg-white text-black shadow-2xl' : 'text-[var(--text-muted)] hover:text-white'}`}
           >
-            <Users size={18} />
-            <span className="font-medium text-sm">Família</span>
+            <Users size={16} />
+            <span className="font-bold text-xs uppercase tracking-wider">Família</span>
           </button>
           <button 
             onClick={() => setScope('personal')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-xl transition-all ${scope === 'personal' ? 'bg-[var(--primary)] text-white' : 'text-[var(--text-muted)]'}`}
+            className={`flex items-center gap-2 px-6 py-2.5 rounded-xl transition-all duration-300 ${scope === 'personal' ? 'bg-white text-black shadow-2xl' : 'text-[var(--text-muted)] hover:text-white'}`}
           >
-            <UserIcon size={18} />
-            <span className="font-medium text-sm">Pessoal</span>
+            <UserIcon size={16} />
+            <span className="font-bold text-xs uppercase tracking-wider">Pessoal</span>
           </button>
         </div>
       </header>
 
-      {/* KPI Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      {/* KPI Blocks (Enhanced Glow) */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
         {kpis.map((kpi, idx) => (
           <motion.div 
             key={idx}
-            whileHover={{ y: -5 }}
-            className="glass p-6 relative overflow-hidden"
+            whileHover={{ y: -8, scale: 1.02 }}
+            className="glass p-8 relative overflow-hidden group cursor-default"
           >
-            <div className="flex justify-between items-start mb-4">
+            <div className="flex justify-between items-start mb-6">
               <div 
-                className="p-3 rounded-2xl" 
-                style={{ backgroundColor: `${kpi.color}15`, color: kpi.color }}
+                className="p-3.5 rounded-2xl transition-transform group-hover:scale-110 duration-500" 
+                style={{ backgroundColor: `${kpi.color}15`, color: kpi.color, boxShadow: `0 0 20px ${kpi.color}20` }}
               >
                 {kpi.icon}
               </div>
-              <div className={`flex items-center gap-1 text-xs font-bold ${kpi.up ? 'text-[var(--success)]' : 'text-[var(--danger)]'}`}>
-                {kpi.up ? <ArrowUpRight size={14} /> : <ArrowDownRight size={14} />}
+              <div className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-tighter ${kpi.up ? 'bg-[var(--success)]/10 text-[var(--success)]' : 'bg-[var(--danger)]/10 text-[var(--danger)]'}`}>
+                {kpi.up ? <ArrowUpRight size={12} /> : <ArrowDownRight size={12} />}
                 {kpi.trend}
               </div>
             </div>
-            <p className="text-sm font-medium text-[var(--text-muted)]">{kpi.title}</p>
-            <h3 className="text-2xl font-bold mt-1">{kpi.value}</h3>
+            <p className="text-xs font-bold text-[var(--text-muted)] uppercase tracking-widest">{kpi.title}</p>
+            <h3 className="text-3xl font-black mt-2 font-heading tracking-tight">{kpi.value}</h3>
             
-            {/* Soft Glow */}
+            {/* dynamic background glow */}
             <div 
-              className="absolute -bottom-4 -right-4 w-12 h-12 rounded-full opacity-10 filter blur-xl"
+              className="absolute -bottom-10 -right-10 w-24 h-24 rounded-full opacity-[0.05] filter blur-3xl transition-opacity group-hover:opacity-20 duration-700"
               style={{ backgroundColor: kpi.color }}
             />
           </motion.div>
         ))}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Main Chart */}
-        <div className="lg:col-span-2 glass p-8">
-          <div className="flex justify-between items-center mb-8">
-            <h2 className="text-xl font-bold flex items-center gap-2">
-              <Activity className="text-[var(--primary)]" /> Fluxo de Caixa
+      <div className="grid grid-cols-1 xl:grid-cols-3 gap-10">
+        {/* Main Area Chart */}
+        <div className="xl:col-span-2 glass p-10 relative group">
+          <div className="flex justify-between items-center mb-10">
+            <h2 className="text-2xl font-black font-heading tracking-tight flex items-center gap-3">
+              <Activity className="text-[var(--accent)]" /> Performance de Fluxo
             </h2>
-            <div className="flex gap-2">
-              <button className="glass p-2 text-[var(--text-muted)] hover:text-white"><Filter size={18} /></button>
+            <div className="flex gap-3">
+              <button className="glass-interactive p-3 rounded-xl text-[var(--text-muted)]"><Filter size={18} /></button>
               <button 
                 onClick={onAddClick}
-                className="bg-[var(--primary)] text-white p-2 rounded-xl shadow-glow transition-transform active:scale-95"
+                className="bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] text-white px-6 py-3 rounded-xl shadow-glow font-bold text-sm flex items-center gap-2 hover:scale-105 active:scale-95 transition-all"
               >
-                <Plus size={18} />
+                <Plus size={18} /> Novo Registro
               </button>
             </div>
           </div>
-          <div className="h-[300px]">
+          <div className="h-[350px]">
             <Line 
               data={lineData} 
               options={{
@@ -167,30 +171,30 @@ export default function DashboardView({ user, onAddClick }) {
                 maintainAspectRatio: false,
                 plugins: { legend: { display: false } },
                 scales: {
-                  y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#94a3b8' } },
-                  x: { grid: { display: false }, ticks: { color: '#94a3b8' } }
+                  y: { grid: { color: 'rgba(255,255,255,0.03)' }, ticks: { color: '#64748b', font: { weight: 'bold', size: 10 } } },
+                  x: { grid: { display: false }, ticks: { color: '#64748b', font: { weight: 'bold', size: 10 } } }
                 }
               }} 
             />
           </div>
         </div>
 
-        {/* Distribution Chart */}
-        <div className="glass p-8">
-          <h2 className="text-xl font-bold mb-8">Categorias</h2>
-          <div className="h-[250px] relative">
+        {/* Categories (Donut) */}
+        <div className="glass p-10 flex flex-col">
+          <h2 className="text-2xl font-black font-heading tracking-tight mb-10">Distribuição</h2>
+          <div className="flex-1 relative min-h-[300px]">
             <Doughnut 
               data={donutData}
               options={{
                 responsive: true,
                 maintainAspectRatio: false,
-                plugins: { legend: { position: 'bottom', labels: { color: '#94a3b8', usePointStyle: true } } },
-                cutout: '75%'
+                plugins: { legend: { position: 'bottom', labels: { color: '#94a3b8', usePointStyle: true, font: { size: 11, weight: 'bold' }, padding: 25 } } },
+                cutout: '80%'
               }}
             />
-            <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-              <p className="text-xs text-[var(--text-muted)]">Total Mensal</p>
-              <p className="text-xl font-bold">R$ 5.4k</p>
+            <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none pb-12">
+              <p className="text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)]">Concentração</p>
+              <p className="text-3xl font-black font-heading tracking-tight text-[var(--accent)]">84%</p>
             </div>
           </div>
         </div>

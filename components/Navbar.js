@@ -1,41 +1,48 @@
-import { auth } from '@/lib/firebase';
-import { Sun, Moon, Bell, Search, User } from 'lucide-react';
+import { Sun, Moon, Bell, Search, Command } from 'lucide-react';
 
 export default function Navbar({ user, theme, toggleTheme }) {
   return (
-    <nav className="flex items-center justify-between px-8 py-6 bg-[rgba(255,255,255,0.02)] backdrop-blur-sm border-b border-[var(--border-card)]">
-      <div className="flex items-center gap-4 bg-[var(--bg-card)] px-4 py-2 rounded-2xl glass flex-1 max-w-md">
-        <Search className="text-[var(--text-muted)] w-5 h-5" />
+    <nav className="flex items-center justify-between px-10 py-8 z-30">
+      <div className="flex items-center gap-4 bg-white/[0.03] border border-white/10 px-5 py-3 rounded-2xl backdrop-blur-xl flex-1 max-w-lg shadow-xl group focus-within:border-[var(--primary)] transition-all">
+        <Search className="text-[var(--text-muted)] w-5 h-5 group-focus-within:text-[var(--primary)]" />
         <input 
           type="text" 
-          placeholder="Buscar transações..." 
-          className="bg-transparent border-none outline-none text-sm w-full text-[var(--text-main)]"
+          placeholder="Busca inteligente (Alt + K)" 
+          className="bg-transparent border-none outline-none text-sm w-full text-[var(--text-main)] font-medium"
         />
+        <div className="hidden sm:flex items-center gap-1 bg-white/5 px-2 py-1 rounded-md border border-white/10">
+          <Command size={12} className="text-[var(--text-muted)]" />
+          <span className="text-[10px] font-bold text-[var(--text-muted)]">K</span>
+        </div>
       </div>
 
-      <div className="flex items-center gap-6 ml-4">
-        <button className="relative p-2 text-[var(--text-muted)] hover:text-[var(--text-main)] transition-colors">
-          <Bell className="w-6 h-6" />
-          <span className="absolute top-2 right-2 w-2 h-2 bg-[var(--secondary)] rounded-full border-2 border-[var(--bg-main)]"></span>
-        </button>
+      <div className="flex items-center gap-6 ml-10">
+        <div className="flex items-center gap-2">
+          <button className="glass-interactive p-3 rounded-xl text-[var(--text-muted)] relative">
+            <Bell size={20} />
+            <span className="absolute top-3 right-3 w-2 h-2 bg-[var(--secondary)] rounded-full ring-4 ring-[#0A0C11]"></span>
+          </button>
+          
+          <button 
+            onClick={toggleTheme}
+            className="glass-interactive p-3 rounded-xl text-[var(--text-muted)] border-none"
+          >
+            {theme === 'light' ? <Moon size={20} /> : <Sun size={20} />}
+          </button>
+        </div>
 
-        <button 
-          onClick={toggleTheme}
-          className="p-2 text-[var(--text-muted)] hover:text-[var(--text-main)] transition-colors"
-        >
-          {theme === 'light' ? <Moon className="w-6 h-6" /> : <Sun className="w-6 h-6" />}
-        </button>
+        <div className="h-10 w-px bg-white/10 mx-2" />
 
-        <div className="flex items-center gap-3 pl-6 border-l border-[var(--border-card)]">
-          <div className="text-right hidden sm:block">
-            <p className="text-sm font-bold">{user?.displayName}</p>
-            <p className="text-xs text-[var(--text-muted)]">Admin Família</p>
-          </div>
+        <div className="flex items-center gap-4 bg-white/[0.03] p-1.5 pr-5 rounded-2xl border border-white/10 glass-interactive cursor-pointer">
           <img 
             src={user?.photoURL || 'https://ui-avatars.com/api/?name=User'} 
             alt="Avatar" 
-            className="w-10 h-10 rounded-xl border-2 border-[var(--primary)] shadow-glow"
+            className="w-9 h-9 rounded-xl border border-white/10"
           />
+          <div className="hidden md:block">
+            <p className="text-sm font-bold leading-tight">{user?.displayName?.split(' ')[0]}</p>
+            <p className="text-[10px] text-[var(--accent)] font-bold uppercase tracking-tighter">Gold Member</p>
+          </div>
         </div>
       </div>
     </nav>
