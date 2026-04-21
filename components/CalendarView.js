@@ -1,6 +1,12 @@
 import { useState } from 'react';
 import { ChevronLeft, ChevronRight, Clock, AlertCircle, CheckCircle2 } from 'lucide-react';
-import { format, addMonths, subMonths, startOfMonth, endOfMonth, startOfWeek, endOfWeek, isSameMonth, isSameDay, addDays, eachDayOfInterval } from 'date-fns';
+import { 
+  format, addMonths, subMonths, 
+  startOfMonth, endOfMonth, 
+  startOfWeek, endOfWeek, 
+  isSameMonth, isSameDay, 
+  addDays, eachDayOfInterval 
+} from 'date-fns';
 import { ptBR, enUS } from 'date-fns/locale';
 import { useLocale } from '@/context/LocaleContext';
 
