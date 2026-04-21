@@ -87,7 +87,7 @@ export default function TransactionModal({ isOpen, onClose, onAdd }) {
             </button>
             <button 
               onClick={() => setFormData({...formData, type: 'income'})}
-              className={`px-4 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all ${formData.type === 'income' ? 'bg-[var(--success)] text-white shadow-glow' : 'text-[var(--text-muted)]'}`}
+              className={`px-4 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all ${formData.type === 'income' ? 'bg-[var(--success)] text-black shadow-glow' : 'text-[var(--text-muted)]'}`}
             >
               Receita
             </button>
