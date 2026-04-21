@@ -179,11 +179,41 @@ export default function SettingsView({ user }) {
             </div>
 
             {message.text && (
-              <div className={`p-4 rounded-xl text-xs font-bold flex items-center gap-2 ${
-                message.type === 'success' ? 'bg-[var(--success)]/10 text-[var(--success)]' : 'bg-[var(--danger)]/10 text-[var(--danger)]'
-              }`}>
-                {message.type === 'success' ? <CheckCircle2 size={16} /> : <XCircle size={16} />}
-                {message.text}
+              <div className="space-y-4">
+                <div className={`p-4 rounded-xl text-xs font-bold flex items-center gap-2 ${
+                  message.type === 'success' ? 'bg-[var(--success)]/10 text-[var(--success)]' : 'bg-[var(--danger)]/10 text-[var(--danger)]'
+                }`}>
+                  {message.type === 'success' ? <CheckCircle2 size={16} /> : <XCircle size={16} />}
+                  {message.text}
+                </div>
+                
+                {message.type === 'success' && (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 animate-slide-up">
+                    <button 
+                      onClick={() => {
+                        navigator.clipboard.writeText("https://nexus-family-finance.vercel.app/");
+                        setMessage({ type: 'success', text: 'Link copiado para a área de transferência!' });
+                      }}
+                      className="flex items-center justify-center gap-2 py-3 bg-white/5 border border-white/10 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-white/10 transition-all"
+                    >
+                      <ChevronRight size={14} className="rotate-90" /> Copiar Link
+                    </button>
+                    <a 
+                      href={`https://wa.me/?text=${encodeURIComponent("Olá! Entre no meu controle familiar do Nexus Finance agora mesmo: https://nexus-family-finance.vercel.app/")}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-center gap-2 py-3 bg-[#25D366]/20 text-[#25D366] border border-[#25D366]/30 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-[#25D366]/30 transition-all"
+                    >
+                      Mandar via WhatsApp
+                    </a>
+                  </div>
+                )}
+
+                {message.text.includes('automaticamente') && (
+                  <p className="text-[10px] text-[var(--text-muted)] italic opacity-60 text-center leading-relaxed">
+                    Nota: O e-mail automático foi disparado. Caso não chegue na caixa de entrada (verifique o Spam), utilize os botões de compartilhamento acima.
+                  </p>
+                )}
               </div>
             )}
           </div>
