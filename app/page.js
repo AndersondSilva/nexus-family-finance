@@ -1,8 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { auth, googleProvider, appleProvider, microsoftProvider } from '@/lib/firebase';
-import { signInWithPopup, onAuthStateChanged, signOut } from 'firebase/auth';
+import { supabase } from '@/lib/supabase';
 import { LayoutDashboard, TrendingUp, TrendingDown, PiggyBank, CreditCard, LogOut, Sun, Moon } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Sidebar from '@/components/Sidebar';
@@ -11,20 +10,77 @@ import LoginScreen from '@/components/LoginScreen';
 import TransactionModal from '@/components/TransactionModal';
 import CalendarView from '@/components/CalendarView';
 import AnnualProjection from '@/components/AnnualProjection';
-import FinancialTips from '@/components/FinancialTips';
+import JuliusAdvisor from '@/components/JuliusAdvisor';
 import SettingsView from '@/components/SettingsView';
 import GoalsManager from '@/components/GoalsManager';
+import { addTransaction, getTransactions, getUserProfile, upsertUserProfile } from '@/lib/db';
 
 export default function Home() {
   const [user, setUser] = useState(null);
+  const [userProfile, setUserProfile] = useState(null);
+  const [transactions, setTransactions] = useState([]);
+  const [scope, setScope] = useState('family');
   const [loading, setLoading] = useState(true);
+  const [dataLoading, setDataLoading] = useState(false);
   const [theme, setTheme] = useState('dark');
   const [activeView, setActiveView] = useState('dashboard');
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  // Fetch transactions logic
+  const fetchTransactions = async (uid, familyId, currentScope) => {
+    setDataLoading(true);
+    try {
+      const data = await getTransactions(uid, familyId || 'default', currentScope);
+      setTransactions(data);
+    } catch (error) {
+      console.error("Error fetching transactions:", error);
+    } finally {
+      setDataLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setUser(user);
+    // Check initial session
+    const checkSession = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session?.user) {
+        setUser(session.user);
+        const profile = await getUserProfile(session.user.id);
+        setUserProfile(profile);
+        if (profile) {
+          fetchTransactions(session.user.id, profile.family_id, scope);
+        }
+      }
+      setLoading(false);
+    };
+
+    checkSession();
+
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+      if (session?.user) {
+        setUser(session.user);
+        
+        let profile;
+        if (event === 'SIGNED_IN') {
+          const profileData = {
+            id: session.user.id,
+            email: session.user.email,
+            display_name: session.user.user_metadata.full_name || session.user.email.split('@')[0],
+            photo_url: session.user.user_metadata.avatar_url,
+            role: 'admin'
+          };
+          profile = await upsertUserProfile(profileData);
+        } else {
+          profile = await getUserProfile(session.user.id);
+        }
+        setUserProfile(profile);
+        fetchTransactions(session.user.id, profile?.family_id, scope);
+      } else {
+        setUser(null);
+        setUserProfile(null);
+        setTransactions([]);
+      }
       setLoading(false);
     });
 
@@ -33,8 +89,26 @@ export default function Home() {
     setTheme(savedTheme);
     document.documentElement.setAttribute('data-theme', savedTheme);
 
-    return () => unsubscribe();
+    // Listen for custom refresh events
+    const handleRefresh = () => {
+      if (user && userProfile) {
+        fetchTransactions(user.id, userProfile.family_id, scope);
+      }
+    };
+    window.addEventListener('transaction-added', handleRefresh);
+
+    return () => {
+      subscription.unsubscribe();
+      window.removeEventListener('transaction-added', handleRefresh);
+    };
   }, []);
+
+  // Re-fetch when scope changes
+  useEffect(() => {
+    if (user && userProfile) {
+      fetchTransactions(user.id, userProfile.family_id, scope);
+    }
+  }, [scope]);
 
   const toggleTheme = () => {
     const newTheme = theme === 'light' ? 'dark' : 'light';
@@ -44,21 +118,22 @@ export default function Home() {
   };
 
   const handleLogin = async (providerName) => {
-    let provider;
-    switch(providerName) {
-      case 'apple': provider = appleProvider; break;
-      case 'microsoft': provider = microsoftProvider; break;
-      default: provider = googleProvider;
-    }
-    
     try {
-      await signInWithPopup(auth, provider);
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: providerName === 'google' ? 'google' : (providerName === 'apple' ? 'apple' : 'azure'),
+        options: {
+          redirectTo: window.location.origin
+        }
+      });
+      if (error) throw error;
     } catch (error) {
       console.error("Login failed:", error);
     }
   };
 
-  const handleLogout = () => signOut(auth);
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+  };
 
   if (loading) {
     return (
@@ -88,14 +163,23 @@ export default function Home() {
           {activeView === 'dashboard' && (
             <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
               <div className="xl:col-span-2">
-                <DashboardView user={user} onAddClick={() => setIsModalOpen(true)} />
+                <DashboardView 
+                  user={user} 
+                  transactions={transactions}
+                  scope={scope}
+                  setScope={setScope}
+                  loading={dataLoading}
+                  onAddClick={() => setIsModalOpen(true)} 
+                />
               </div>
               <div className="space-y-8">
-                <FinancialTips />
+                <JuliusAdvisor transactions={transactions} user={user} />
                 <div className="glass p-8 border-l-4 border-[var(--accent)]">
                    <h3 className="text-xs font-black uppercase tracking-widest text-[var(--text-muted)] mb-2">Saúde do Mês</h3>
-                   <p className="text-3xl font-black font-heading text-[var(--danger)]">NO VERMELHO</p>
-                   <p className="text-[10px] font-bold text-[var(--text-muted)] mt-1 uppercase">Projeção: -R$ 450,00</p>
+                   <p className={`text-3xl font-black font-heading ${transactions.reduce((acc, c) => c.type === 'income' ? acc + c.amount : acc - c.amount, 0) >= 0 ? 'text-[var(--success)]' : 'text-[var(--danger)]'}`}>
+                     {transactions.reduce((acc, c) => c.type === 'income' ? acc + c.amount : acc - c.amount, 0) >= 0 ? 'NO AZUL' : 'NO VERMELHO'}
+                   </p>
+                   <p className="text-[10px] font-bold text-[var(--text-muted)] mt-1 uppercase">Projeção: R$ {transactions.reduce((acc, c) => c.type === 'income' ? acc + c.amount : acc - c.amount, 0).toFixed(2)}</p>
                 </div>
               </div>
             </div>
@@ -143,10 +227,17 @@ export default function Home() {
 
         <TransactionModal 
           isOpen={isModalOpen} 
+          user={user}
           onClose={() => setIsModalOpen(false)} 
-          onAdd={(data) => {
-            console.log("New Transaction:", data);
-            setIsModalOpen(false);
+          onAdd={async (data) => {
+            try {
+              await addTransaction(data, user.id, userProfile?.family_id || 'default');
+              setIsModalOpen(false);
+              // Recarregar dados
+              window.dispatchEvent(new CustomEvent('transaction-added'));
+            } catch (error) {
+              alert("Erro ao salvar transação. Verifique sua conexão.");
+            }
           }}
         />
       </div>

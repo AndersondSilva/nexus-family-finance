@@ -23,9 +23,7 @@ export default function Sidebar({ user, onLogout, activeView, setActiveView }) {
   return (
     <aside className="hidden lg:flex flex-col w-80 glass m-6 border-none p-8 z-20 shadow-2xl overflow-y-auto">
       <div className="flex items-center gap-3 mb-12 px-2">
-        <div className="bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] p-2 rounded-xl shadow-glow">
-          <LayoutDashboard className="text-white w-6 h-6" />
-        </div>
+        <img src="/logo.png" alt="Nexus Logo" className="w-12 h-12 object-contain" />
         <span className="text-2xl font-bold tracking-tight font-heading text-white">NEXUS</span>
       </div>
 

@@ -17,7 +17,7 @@ Este documento serve como a **"Constituição Técnica"** do projeto. Ele foi pr
 - **Framework**: [Next.js](https://nextjs.org/) (App Router, Versão 14+)
 - **Linguagem**: JavaScript (ES6+)
 - **Estilização**: CSS Vanilla com Variáveis Dinâmicas (Sistema Neon-Glass)
-- **Autenticação & Dados**: [Firebase](https://firebase.google.com/) (Auth Google + Firestore)
+- **Autenticação & Dados**: [Supabase](https://supabase.com/) (Auth + PostgreSQL com RLS) [MIGRADO]
 - **Animações**: Framer Motion
 - **Visualização**: Chart.js + React-Chartjs-2
 
@@ -85,13 +85,35 @@ Se você for solicitado a mudar a aparência:
 - **Hero Update**: Landing page com animações cinematográficas e elementos 3D flutuantes.
 - **Glassmorphism 2.0**: Aumento do blur para 40px-60px e otimização de contraste SOTA.
 
-### [1.0.0] - 2026-04-21
-- Inicialização do projeto com Next.js.
-- Implementação do design Neon-Glass (Glassmorphism).
-- Criação da lógica de Escopo Duplo (Pessoal/Familiar).
-- Integração de Dashboard estilo Power BI.
-- Documentação para IA embarcada.
+### [1.3.0] - 2026-04-22 (Julius Takeover)
+- **Soul Activation**: Integração real com Firestore para salvamento de transações.
+- **Dynamic Dashboard**: KPIs e Gráficos agora consomem dados reais do banco de dados.
+- **Premium Identity**: Implementação do novo logo soberano em `public/logo.png`.
+- **Security Audit**: Criação de `firestore.rules` para isolamento de escopo.
+- **Verification Protocol**: Implementação de sistema de recarregamento reativo via eventos customizados.
 
 ---
 
-> **Nota para a IA**: Ao modificar este projeto, sempre mantenha o nível de qualidade "11/10" exigido pelo usuário. Priorize a privacidade do escopo pessoal acima de tudo.
+## 🛡️ Governança de Julius (Post-Mortem & Aprendizado)
+
+Após auditoria técnica, as seguintes diretrizes foram estabelecidas para evitar falhas de "Automação Estática":
+
+1. **Protocolo "Soul-First"**: Nenhuma interface (UI) deve ser considerada completa sem a integração correspondente no backend. Mockups são permitidos apenas em fase de rascunho.
+2. **Validação de Ambiente**: O sistema deve degradar graciosamente ou alertar o usuário se chaves do Firebase estiverem faltando, em vez de apenas travar.
+3. **Integridade de Ativos**: Todo ativo visual (logos, ícones) deve ter um caminho canônico definido e verificado em cada compilação.
+4. **Segurança por Padrão**: Regras de segurança do Firestore devem ser tratadas como código e versionadas junto com o projeto.
+5. **Inteligência de Plataforma**: Consultar sempre o [PLATFORM_INTELLIGENCE.md](file:///C:/Users/ander/.gemini/antigravity/brain/e4574aaf-6daa-4759-ac6d-fc2ab8c42a15/PLATFORM_INTELLIGENCE.md) antes de migrar ou adotar novos serviços.
+
+> **Nota de Julius**: A beleza sem função é uma distração. A força do Nexus reside na sua precisão matemática e segurança soberana.
+
+---
+
+## 🧪 Protocolo de QA Soberano (Julius Mandatário)
+
+Todo ciclo de desenvolvimento deve encerrar com uma bateria de testes que valide:
+
+1.  **Integridade de Autenticação**: Fluxo de login e persistência de sessão.
+2.  **Isolamento de Escopo (Familiar/Pessoal)**: Verificação de RLS (Row Level Security) para garantir que dados pessoais não vazem para a família e vice-versa.
+3.  **Consistência de Dados**: Verificação de tipos e precisão decimal em transações.
+4.  **Feedback de Inteligência**: Validação dos insights gerados pelo Julius Advisor com base em dados reais.
+5.  **Learning Loop**: Registro de falhas detectadas para atualização dos padrões de desenvolvimento.

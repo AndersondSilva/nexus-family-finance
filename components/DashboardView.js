@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { 
   TrendingUp, TrendingDown, PiggyBank, CreditCard, 
@@ -20,6 +20,8 @@ import {
 } from 'chart.js';
 import AIDoc from '@/components/AIDoc';
 import { useLocale } from '@/context/LocaleContext';
+import { getTransactions, getUserProfile } from '@/lib/db';
+import JuliusAdvisor from '@/components/JuliusAdvisor';
 
 ChartJS.register(
   CategoryScale,
@@ -33,45 +35,49 @@ ChartJS.register(
   Filler
 );
 
-export default function DashboardView({ user, onAddClick }) {
-  const [scope, setScope] = useState('family'); 
+export default function DashboardView({ user, transactions, scope, setScope, loading, onAddClick }) {
   const { t, formatCurrency } = useLocale();
 
+  // Cálculo de KPIs Reais
+  const totalBalance = transactions.reduce((acc, curr) => curr.type === 'income' ? acc + curr.amount : acc - curr.amount, 0);
+  const totalIncome = transactions.filter(t => t.type === 'income').reduce((acc, curr) => acc + curr.amount, 0);
+  const totalExpenses = transactions.filter(t => t.type === 'expense').reduce((acc, curr) => acc + curr.amount, 0);
+
   const kpis = [
-    { title: t.balance, rawValue: 15420, icon: <TrendingUp size={20} />, color: 'var(--accent)', trend: '+12%', up: true },
-    { title: t.expenses, rawValue: 4120.45, icon: <TrendingDown size={20} />, color: 'var(--danger)', trend: '-5%', up: false },
-    { title: t.savings, rawValue: 45000, icon: <PiggyBank size={20} />, color: 'var(--success)', trend: '+R$ 2k', up: true },
-    { title: t.debts, rawValue: 2400, icon: <CreditCard size={20} />, color: 'var(--secondary)', trend: 'Estável', up: true },
+    { title: t.balance, rawValue: totalBalance, icon: <TrendingUp size={20} />, color: 'var(--accent)', trend: 'Real', up: totalBalance >= 0 },
+    { title: t.expenses, rawValue: totalExpenses, icon: <TrendingDown size={20} />, color: 'var(--danger)', trend: 'Total', up: false },
+    { title: t.savings, rawValue: 0, icon: <PiggyBank size={20} />, color: 'var(--success)', trend: 'N/A', up: true }, // Placeholder para poupança real
+    { title: t.debts, rawValue: 0, icon: <CreditCard size={20} />, color: 'var(--secondary)', trend: 'Estável', up: true },
   ];
 
   const lineData = {
-    labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'],
+    labels: transactions.slice(0, 6).reverse().map(t => new Date(t.createdAt).toLocaleDateString(undefined, { month: 'short' })),
     datasets: [
       {
         label: t.balance,
-        data: [12000, 15000, 13000, 17000, 14000, 15420],
+        data: transactions.slice(0, 6).reverse().map((_, idx, arr) => {
+          const sub = arr.slice(0, idx + 1);
+          return sub.reduce((acc, curr) => curr.type === 'income' ? acc + curr.amount : acc - curr.amount, 0);
+        }),
         borderColor: '#00f2ff',
         backgroundColor: 'rgba(0, 242, 255, 0.1)',
         fill: true,
         tension: 0.4,
         pointBackgroundColor: '#00f2ff',
         pointBorderColor: '#fff',
-      },
-      {
-        label: t.expenses,
-        data: [8000, 9500, 7000, 11000, 8500, 4120],
-        borderColor: '#ff00d6',
-        backgroundColor: 'transparent',
-        borderDash: [5, 5],
-        tension: 0.4,
       }
     ]
   };
 
+  const categoryCounts = transactions.reduce((acc, curr) => {
+    acc[curr.category] = (acc[curr.category] || 0) + curr.amount;
+    return acc;
+  }, {});
+
   const donutData = {
-    labels: ['Carro', 'Casa', 'Alimentação', 'Lazer', 'Saúde'],
+    labels: Object.keys(categoryCounts).length > 0 ? Object.keys(categoryCounts) : ['Nenhuma'],
     datasets: [{
-      data: [35, 25, 20, 10, 10],
+      data: Object.keys(categoryCounts).length > 0 ? Object.values(categoryCounts) : [100],
       backgroundColor: [
         '#00f2ff',
         '#ff00d6',
@@ -115,6 +121,12 @@ export default function DashboardView({ user, onAddClick }) {
           </button>
         </div>
       </header>
+
+      {loading && (
+        <div className="flex items-center justify-center py-20">
+          <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-[var(--accent)]"></div>
+        </div>
+      )}
 
       {/* KPI Blocks (Enhanced Glow) */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -202,7 +214,9 @@ export default function DashboardView({ user, onAddClick }) {
             />
             <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none pb-12">
               <p className="text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)]">Concentração</p>
-              <p className="text-3xl font-black font-heading tracking-tight text-[var(--accent)]">84%</p>
+              <p className="text-3xl font-black font-heading tracking-tight text-[var(--accent)]">
+                {totalExpenses > 0 ? ((Math.max(...Object.values(categoryCounts)) / totalExpenses) * 100).toFixed(0) : 0}%
+              </p>
             </div>
           </div>
         </div>

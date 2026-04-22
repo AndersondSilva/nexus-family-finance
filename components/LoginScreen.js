@@ -13,9 +13,7 @@ export default function LoginScreen({ onLogin, theme, toggleTheme }) {
       {/* Navbar Minimalista */}
       <nav className="w-full max-w-7xl flex justify-between items-center z-50 mb-20 animate-fade-in">
         <div className="flex items-center gap-2">
-          <div className="bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] p-2 rounded-xl shadow-glow">
-            <LayoutDashboard className="text-white w-5 h-5" />
-          </div>
+          <img src="/logo.png" alt="Nexus Logo" className="w-10 h-10 object-contain" />
           <span className="text-lg font-bold tracking-tight font-heading uppercase text-white">NEXUS</span>
         </div>
         <div className="flex items-center gap-4">

@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react';
 import { X, DollarSign, Tag, Users, User, Calendar, FileText, Plus, Minus, Calculator, Wallet, Briefcase, Gift, Umbrella, Clock, CreditCard } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { getCategories } from '@/lib/db';
 
-export default function TransactionModal({ isOpen, onClose, onAdd }) {
+export default function TransactionModal({ isOpen, onClose, onAdd, user }) {
   const [formData, setFormData] = useState({
     description: '',
     amount: 0,
-    category: '',
+    categoryId: '',
+    categoryName: '',
     scope: 'family',
     type: 'expense',
     dueDate: '',
@@ -22,6 +24,21 @@ export default function TransactionModal({ isOpen, onClose, onAdd }) {
   });
 
   const [isDetailedIncome, setIsDetailedIncome] = useState(false);
+  const [dbCategories, setDbCategories] = useState([]);
+
+  useEffect(() => {
+    if (isOpen && user) {
+      const loadCategories = async () => {
+        try {
+          const cats = await getCategories(user.id);
+          setDbCategories(cats);
+        } catch (error) {
+          console.error("Error loading categories:", error);
+        }
+      };
+      loadCategories();
+    }
+  }, [isOpen, user]);
 
   useEffect(() => {
     if (isDetailedIncome && formData.type === 'income') {
@@ -34,19 +51,6 @@ export default function TransactionModal({ isOpen, onClose, onAdd }) {
     }
   }, [formData.details, isDetailedIncome, formData.type]);
 
-  const categories = [
-    'Salário',
-    'Investimentos',
-    'Vendas',
-    'Carro (Combustível, Pneus, Mecânico, Prestação)',
-    'Casa (Internet, Luz, Gás)',
-    'Saúde (Remédios)',
-    'Alimentação',
-    'Roupas',
-    'Lazer',
-    'Telefone (Individual)',
-    'Extras'
-  ];
 
   const banks = [
     { name: 'Nubank', color: '#8a05be' },
@@ -197,11 +201,18 @@ export default function TransactionModal({ isOpen, onClose, onAdd }) {
               <Tag size={18} className="text-[var(--secondary)]" />
               <select 
                 className="bg-transparent border-none outline-none w-full text-sm font-semibold"
-                value={formData.category}
-                onChange={(e) => setFormData({...formData, category: e.target.value})}
+                value={formData.categoryId}
+                onChange={(e) => {
+                  const selectedCat = dbCategories.find(c => c.id === e.target.value);
+                  setFormData({
+                    ...formData, 
+                    categoryId: e.target.value,
+                    categoryName: selectedCat ? selectedCat.name : ''
+                  });
+                }}
               >
                 <option value="">Selecione...</option>
-                {categories.map(cat => <option key={cat} value={cat} className="bg-[#0A0C11]">{cat}</option>)}
+                {dbCategories.map(cat => <option key={cat.id} value={cat.id} className="bg-[#0A0C11]">{cat.name}</option>)}
               </select>
             </div>
           </div>

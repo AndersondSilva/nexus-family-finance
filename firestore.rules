@@ -1,0 +1,30 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Perfil do Usuário
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // Transações
+    match /transactions/{transactionId} {
+      
+      // Regra para Escopo Pessoal: Apenas o dono pode ver ou modificar
+      allow read, write: if request.auth != null 
+        && resource.data.scope == 'personal' 
+        && request.auth.uid == resource.data.ownerId;
+        
+      // Regra para Escopo Familiar: Qualquer um com o mesmo familyId pode ver
+      // Mas apenas o dono ou um admin pode modificar (admin logic placeholder)
+      allow read: if request.auth != null 
+        && resource.data.scope == 'family' 
+        && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.familyId == resource.data.familyId;
+        
+      allow create: if request.auth != null;
+      
+      allow update, delete: if request.auth != null 
+        && request.auth.uid == resource.data.ownerId;
+    }
+  }
+}
