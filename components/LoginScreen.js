@@ -1,4 +1,4 @@
-import { LayoutDashboard, Moon, Sun, ArrowRight, Shield, Zap, Heart, Globe } from 'lucide-react';
+import { LayoutDashboard, Moon, Sun, ArrowRight, Shield, Zap, Heart, Globe, Mail } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useLocale } from '@/context/LocaleContext';
 
