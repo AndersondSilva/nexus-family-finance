@@ -119,7 +119,7 @@ export default function Home() {
     document.documentElement.setAttribute('data-theme', newTheme);
   };
 
-  const handleLogin = async (providerName, email = null) => {
+  const handleLogin = async (providerName, email = null, password = null) => {
     try {
       if (providerName === 'email') {
         const { error } = await supabase.auth.signInWithOtp({
@@ -132,9 +132,33 @@ export default function Home() {
           if (error.message.includes("provider is not enabled")) {
             throw new Error("O provedor de EMAIL (Magic Link) está DESATIVADO no Dashboard do Supabase. Vá em Authentication > Providers e ative 'Email'.");
           }
+          if (error.message.includes("For security purposes")) {
+             alert("✅ O Link Mágico JÁ FOI ENVIADO! Verifique sua caixa de entrada ou Spam. Aguarde 60 segundos antes de tentar de novo.");
+             return;
+          }
           throw error;
         }
-        alert("Link mágico enviado! Verifique seu e-mail.");
+        alert("✅ Link mágico enviado! Verifique seu e-mail.");
+      } else if (providerName === 'password') {
+         // Login via Senha (Fallback Seguro)
+         const { error } = await supabase.auth.signInWithPassword({
+           email,
+           password
+         });
+         
+         if (error) {
+            // Se o usuário não existir, tentamos cadastrar
+            if (error.message.includes("Invalid login credentials")) {
+               const { error: signUpError } = await supabase.auth.signUp({
+                 email,
+                 password
+               });
+               if (signUpError) throw signUpError;
+               alert("✅ Conta criada com sucesso! Você está logado.");
+            } else {
+               throw error;
+            }
+         }
       } else {
         const { error } = await supabase.auth.signInWithOAuth({
           provider: providerName === 'google' ? 'google' : (providerName === 'apple' ? 'apple' : 'azure'),
@@ -146,7 +170,7 @@ export default function Home() {
       }
     } catch (error) {
       console.error("Login failed:", error);
-      alert(`[ERRO SOTA] ${error.message}`);
+      alert(`[ERRO DE ACESSO] ${error.message}`);
     }
   };
 

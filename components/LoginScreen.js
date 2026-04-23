@@ -48,7 +48,7 @@ export default function LoginScreen({ onLogin, theme, toggleTheme }) {
           <div className="flex flex-col gap-4 max-w-sm">
             <div className="space-y-4">
               <div className="flex flex-col gap-2">
-                <label className="text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)] ml-1">Acesso Direto</label>
+                <label className="text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)] ml-1">E-mail</label>
                 <div className="flex items-center gap-3 bg-white/5 p-4 rounded-2xl border border-white/5 focus-within:border-[var(--primary)]/30 transition-all">
                   <Mail size={18} className="text-[var(--text-muted)]" />
                   <input 
@@ -59,16 +59,42 @@ export default function LoginScreen({ onLogin, theme, toggleTheme }) {
                   />
                 </div>
               </div>
-              <button 
-                onClick={() => {
-                  const email = document.getElementById('email-input').value;
-                  if (email) onLogin('email', email);
-                  else alert("Por favor, insira um e-mail válido.");
-                }}
-                className="w-full bg-[var(--primary)] text-white px-8 py-4 rounded-2xl font-black text-xs uppercase tracking-widest hover:scale-[1.02] transition-all shadow-glow active:scale-95"
-              >
-                Entrar com Link Mágico
-              </button>
+              <div className="flex flex-col gap-2">
+                <label className="text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)] ml-1">Senha (Opcional para Link Mágico)</label>
+                <div className="flex items-center gap-3 bg-white/5 p-4 rounded-2xl border border-white/5 focus-within:border-[var(--primary)]/30 transition-all">
+                  <Shield size={18} className="text-[var(--text-muted)]" />
+                  <input 
+                    id="password-input"
+                    type="password" 
+                    placeholder="Sua senha..."
+                    className="bg-transparent border-none outline-none w-full text-sm font-semibold text-white"
+                  />
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                 <button 
+                   onClick={() => {
+                     const email = document.getElementById('email-input').value;
+                     const password = document.getElementById('password-input').value;
+                     if (!email) { alert("Por favor, insira um e-mail."); return; }
+                     if (!password) { alert("Por favor, insira uma senha."); return; }
+                     onLogin('password', email, password);
+                   }}
+                   className="w-full bg-[var(--accent)] text-[var(--bg-main)] px-4 py-4 rounded-2xl font-black text-[10px] uppercase tracking-widest hover:scale-[1.02] transition-all shadow-glow active:scale-95"
+                 >
+                   Entrar (Senha)
+                 </button>
+                 <button 
+                   onClick={() => {
+                     const email = document.getElementById('email-input').value;
+                     if (email) onLogin('email', email);
+                     else alert("Por favor, insira um e-mail válido para o Link Mágico.");
+                   }}
+                   className="w-full bg-white/10 text-white px-4 py-4 rounded-2xl font-black text-[10px] uppercase tracking-widest hover:scale-[1.02] transition-all active:scale-95 border border-white/10"
+                 >
+                   Link Mágico
+                 </button>
+              </div>
             </div>
 
             <div className="relative my-4">
@@ -77,35 +103,28 @@ export default function LoginScreen({ onLogin, theme, toggleTheme }) {
             </div>
 
             <button 
-              disabled
-              title="Aguardando Configuração de API"
-              className="bg-white/10 text-white/30 px-8 py-4 rounded-2xl font-bold text-sm flex items-center justify-center gap-3 cursor-not-allowed border border-white/5 grayscale"
+              onClick={() => alert("O Login com Google precisa ser ativado no Supabase. Para uso real, vá em Authentication > Providers > Google e adicione seu Client ID.")}
+              className="bg-white/10 text-white hover:bg-white/20 px-8 py-4 rounded-2xl font-bold text-sm flex items-center justify-center gap-3 transition-all border border-white/5"
             >
-              <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" className="w-5 h-5 opacity-20" />
-              Google (Configuração Pendente)
+              <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" className="w-5 h-5" />
+              Continuar com Google
             </button>
             <div className="grid grid-cols-2 gap-4">
               <button 
-                disabled
-                className="bg-black/20 text-white/20 px-4 py-4 rounded-2xl font-bold text-[10px] flex items-center justify-center gap-2 cursor-not-allowed border border-white/5 grayscale"
+                onClick={() => alert("O Login com Apple precisa ser ativado no Supabase. Para uso real, vá em Authentication > Providers > Apple.")}
+                className="bg-black/40 text-white hover:bg-black/60 px-4 py-4 rounded-2xl font-bold text-[10px] flex items-center justify-center gap-2 transition-all border border-white/5"
               >
-                <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" alt="Apple" className="w-4 h-4 invert opacity-10" />
+                <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" alt="Apple" className="w-4 h-4 invert opacity-80" />
                 Apple
               </button>
               <button 
-                disabled
-                className="bg-white/5 text-white/20 px-4 py-4 rounded-2xl font-bold text-[10px] flex items-center justify-center gap-2 cursor-not-allowed border border-white/5 grayscale"
+                onClick={() => alert("O Login com Microsoft precisa ser ativado no Supabase.")}
+                className="bg-white/5 text-white hover:bg-white/10 px-4 py-4 rounded-2xl font-bold text-[10px] flex items-center justify-center gap-2 transition-all border border-white/5"
               >
-                <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" alt="Microsoft" className="w-4 h-4 opacity-10" />
+                <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" alt="Microsoft" className="w-4 h-4" />
                 Microsoft
               </button>
             </div>
-            <p className="text-[9px] text-[var(--text-muted)] text-center italic opacity-60">
-              * SSO Providers requerem chaves de API proprietárias. Use o Link Mágico para acesso soberano imediato.
-            </p>
-            <button className="glass px-8 py-3 rounded-2xl font-bold text-xs hover:bg-white/5 transition-all text-[#94a3b8] uppercase tracking-widest">
-              Watch Demo
-            </button>
             
             {/* Cláusula de Soberania de Dados */}
             <div className="mt-6 p-4 rounded-2xl bg-[var(--primary)]/5 border border-white/5 space-y-2">
