@@ -103,8 +103,8 @@ export default function LoginScreen({ onLogin, theme, toggleTheme }) {
             </div>
 
             <button 
-              onClick={() => alert("O Login com Google precisa ser ativado no Supabase. Para uso real, vá em Authentication > Providers > Google e adicione seu Client ID.")}
-              className="bg-white/10 text-white hover:bg-white/20 px-8 py-4 rounded-2xl font-bold text-sm flex items-center justify-center gap-3 transition-all border border-white/5"
+              onClick={() => onLogin('google')}
+              className="bg-white/10 text-white hover:bg-white/20 px-8 py-4 rounded-2xl font-bold text-sm flex items-center justify-center gap-3 transition-all border border-white/5 hover:scale-[1.02] shadow-glow active:scale-95"
             >
               <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" className="w-5 h-5" />
               Continuar com Google
