@@ -47,7 +47,20 @@ export default function Home() {
       const { data: { session } } = await supabase.auth.getSession();
       if (session?.user) {
         setUser(session.user);
-        const profile = await getUserProfile(session.user.id);
+        let profile = await getUserProfile(session.user.id);
+        
+        // Auto-heal: If profile doesn't exist, create it immediately
+        if (!profile) {
+          const profileData = {
+            id: session.user.id,
+            email: session.user.email,
+            display_name: session.user.user_metadata?.full_name || session.user.email.split('@')[0],
+            photo_url: session.user.user_metadata?.avatar_url,
+            role: 'admin'
+          };
+          profile = await upsertUserProfile(profileData);
+        }
+        
         setUserProfile(profile);
         if (profile) {
           fetchTransactions(session.user.id, profile.family_id, scope);

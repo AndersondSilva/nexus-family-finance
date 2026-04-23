@@ -76,7 +76,7 @@ export default function SettingsView({ user }) {
       setInviteEmail('');
     } catch (error) {
       console.error("Invite error:", error);
-      setMessage({ type: 'error', text: 'Erro ao enviar convite. Verifique sua conexão.' });
+      setMessage({ type: 'error', text: `Erro ao enviar: ${error.message || error.details || 'Falha desconhecida'}` });
     }
     setLoading(false);
   };
