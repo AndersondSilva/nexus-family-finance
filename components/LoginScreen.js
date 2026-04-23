@@ -77,28 +77,32 @@ export default function LoginScreen({ onLogin, theme, toggleTheme }) {
             </div>
 
             <button 
-              onClick={() => onLogin('google')}
-              className="bg-white text-black px-8 py-4 rounded-2xl font-bold text-sm flex items-center justify-center gap-3 hover:scale-[1.02] transition-all border border-white/10"
+              disabled
+              title="Aguardando Configuração de API"
+              className="bg-white/10 text-white/30 px-8 py-4 rounded-2xl font-bold text-sm flex items-center justify-center gap-3 cursor-not-allowed border border-white/5 grayscale"
             >
-              <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" className="w-5 h-5" />
-              Sign in with Google
+              <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" className="w-5 h-5 opacity-20" />
+              Google (Configuração Pendente)
             </button>
             <div className="grid grid-cols-2 gap-4">
               <button 
-                onClick={() => onLogin('apple')}
-                className="bg-[#000000] text-white px-4 py-4 rounded-2xl font-bold text-xs flex items-center justify-center gap-2 hover:bg-black/80 transition-all border border-white/10"
+                disabled
+                className="bg-black/20 text-white/20 px-4 py-4 rounded-2xl font-bold text-[10px] flex items-center justify-center gap-2 cursor-not-allowed border border-white/5 grayscale"
               >
-                <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" alt="Apple" className="w-4 h-4 invert" />
+                <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" alt="Apple" className="w-4 h-4 invert opacity-10" />
                 Apple
               </button>
               <button 
-                onClick={() => onLogin('microsoft')}
-                className="bg-[#2F2F2F] text-white px-4 py-4 rounded-2xl font-bold text-xs flex items-center justify-center gap-2 hover:bg-[#3F3F3F] transition-all border border-white/10"
+                disabled
+                className="bg-white/5 text-white/20 px-4 py-4 rounded-2xl font-bold text-[10px] flex items-center justify-center gap-2 cursor-not-allowed border border-white/5 grayscale"
               >
-                <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" alt="Microsoft" className="w-4 h-4" />
+                <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" alt="Microsoft" className="w-4 h-4 opacity-10" />
                 Microsoft
               </button>
             </div>
+            <p className="text-[9px] text-[var(--text-muted)] text-center italic opacity-60">
+              * SSO Providers requerem chaves de API proprietárias. Use o Link Mágico para acesso soberano imediato.
+            </p>
             <button className="glass px-8 py-3 rounded-2xl font-bold text-xs hover:bg-white/5 transition-all text-[#94a3b8] uppercase tracking-widest">
               Watch Demo
             </button>

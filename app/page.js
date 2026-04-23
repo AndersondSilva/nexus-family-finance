@@ -128,7 +128,12 @@ export default function Home() {
             emailRedirectTo: window.location.origin
           }
         });
-        if (error) throw error;
+        if (error) {
+          if (error.message.includes("provider is not enabled")) {
+            throw new Error("O provedor de EMAIL (Magic Link) está DESATIVADO no Dashboard do Supabase. Vá em Authentication > Providers e ative 'Email'.");
+          }
+          throw error;
+        }
         alert("Link mágico enviado! Verifique seu e-mail.");
       } else {
         const { error } = await supabase.auth.signInWithOAuth({
@@ -141,7 +146,7 @@ export default function Home() {
       }
     } catch (error) {
       console.error("Login failed:", error);
-      alert(`Erro de Autenticação: ${error.message || 'Provedor não habilitado no Supabase.'}`);
+      alert(`[ERRO SOTA] ${error.message}`);
     }
   };
 
