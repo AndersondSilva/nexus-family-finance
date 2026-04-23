@@ -5,9 +5,9 @@ Este documento serve como a **"Constituição Técnica"** do projeto. Ele foi pr
 ---
 
 ## 📑 Visão Geral da Versão
-- **Versão Atual**: 1.2.0 (I18n Evolution)
-- **Status**: Estável / Global SOTA
-- **Autor**: Engenharia Sênior (Antigravity AI)
+- **Versão Atual**: 1.7.0 (Sovereign Unification)
+- **Status**: Produção / Resiliência Total
+- **Autor**: Julius (Engenharia Soberana)
 
 ---
 
@@ -28,22 +28,29 @@ Toda transação financeira neste sistema **DEVE** possuir um atributo `scope`.
 
 ---
 
-## 💾 Esquema de Dados (Firestore)
+## 💾 Esquema de Dados (Supabase - PostgreSQL)
 
-### Coleção `users`
-- `uid`: Chave primária (UID do Firebase Auth).
-- `displayName`, `email`, `photoURL`.
-- `familyId`: ID do grupo familiar vinculado.
+### Tabela `profiles`
+- `id`: UUID (auth.users).
+- `display_name`, `email`, `photo_url`.
+- `family_id`: UUID do grupo familiar vinculado.
 - `role`: "admin" | "editor" | "viewer".
 
-### Coleção `transactions`
-- `id`: Auto-gerado.
+### Tabela `transactions`
+- `id`: UUID Primary Key.
 - `description`: String.
-- `amount`: Number.
-- `category`: String (ex: "Carro", "Saúde").
+- `amount`: Numeric(12,2).
+- `category_id`: UUID (FK categories).
 - `scope`: "personal" | "family".
-- `ownerId`: UID do criador.
-- `createdAt`: Timestamp.
+- `owner_id`: UUID (auth.users).
+- `family_id`: UUID (nullable).
+- `created_at`: Timestamp.
+
+### Tabela `invitations` (Nova)
+- `id`: UUID.
+- `from_email`, `to_email`.
+- `from_uid`: UUID.
+- `status`: "pending" | "accepted" | "rejected".
 
 ---
 
@@ -85,12 +92,11 @@ Se você for solicitado a mudar a aparência:
 - **Hero Update**: Landing page com animações cinematográficas e elementos 3D flutuantes.
 - **Glassmorphism 2.0**: Aumento do blur para 40px-60px e otimização de contraste SOTA.
 
-### [1.3.0] - 2026-04-22 (Julius Takeover)
-- **Soul Activation**: Integração real com Firestore para salvamento de transações.
-- **Dynamic Dashboard**: KPIs e Gráficos agora consomem dados reais do banco de dados.
-- **Premium Identity**: Implementação do novo logo soberano em `public/logo.png`.
-- **Security Audit**: Criação de `firestore.rules` para isolamento de escopo.
-- **Verification Protocol**: Implementação de sistema de recarregamento reativo via eventos customizados.
+### [1.7.0] - 2026-04-23
+- **Supabase Unification**: Remoção completa do Firebase para evitar erros de state e storage partitioning.
+- **Invitations System**: Migração dos convites familiares para tabela nativa com Realtime.
+- **Danger Zone**: Implementação do botão "Zerar Minha Conta" para reset de dados de teste.
+- **Error Resilience**: Adoção do protocolo de tratamento de erro soberano.
 
 ---
 

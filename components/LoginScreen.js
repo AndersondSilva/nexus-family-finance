@@ -1,5 +1,3 @@
-import { auth, googleProvider } from '@/lib/firebase';
-import { signInWithPopup } from 'firebase/auth';
 import { LayoutDashboard, Moon, Sun, ArrowRight, Shield, Zap, Heart, Globe } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useLocale } from '@/context/LocaleContext';

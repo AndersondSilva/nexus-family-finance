@@ -76,3 +76,51 @@ INSERT INTO categories (name, icon, color, is_default) VALUES
   ('Saúde', 'Umbrella', '#ffaa00', true),
   ('Carro', 'CreditCard', '#3b82f6', true),
   ('Casa', 'Zap', '#ffffff', true);
+
+-- 7. Tabela de Convites Familiares
+CREATE TABLE invitations (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  from_email TEXT NOT NULL,
+  from_uid UUID REFERENCES profiles(id) ON DELETE CASCADE,
+  to_email TEXT NOT NULL,
+  status TEXT DEFAULT 'pending' CHECK (status IN ('pending', 'accepted', 'rejected')),
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW()) NOT NULL,
+  accepted_at TIMESTAMP WITH TIME ZONE
+);
+
+-- RLS para Convites
+ALTER TABLE invitations ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Users can view invitations sent/received" ON invitations
+  FOR SELECT USING (
+    auth.uid() = from_uid OR 
+    to_email = (SELECT email FROM profiles WHERE id = auth.uid())
+  );
+
+CREATE POLICY "Users can create invitations" ON invitations
+  FOR INSERT WITH CHECK (auth.uid() = from_uid);
+
+CREATE POLICY "Users can update received invitations" ON invitations
+  FOR UPDATE USING (
+    to_email = (SELECT email FROM profiles WHERE id = auth.uid())
+  );
+
+-- 8. Tabela de Feedback e Suporte
+CREATE TABLE feedback (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  user_id UUID REFERENCES profiles(id) ON DELETE CASCADE,
+  message TEXT NOT NULL,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW()) NOT NULL
+);
+
+ALTER TABLE feedback ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Users can create feedback" ON feedback
+  FOR INSERT WITH CHECK (auth.uid() = user_id);
+
+CREATE POLICY "Admins can view feedback" ON feedback
+  FOR SELECT USING (
+    (SELECT role FROM profiles WHERE id = auth.uid()) = 'admin'
+  );
+
+

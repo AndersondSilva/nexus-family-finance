@@ -13,7 +13,9 @@ import AnnualProjection from '@/components/AnnualProjection';
 import JuliusAdvisor from '@/components/JuliusAdvisor';
 import SettingsView from '@/components/SettingsView';
 import GoalsManager from '@/components/GoalsManager';
+import SupportView from '@/components/SupportView';
 import { addTransaction, getTransactions, getUserProfile, upsertUserProfile } from '@/lib/db';
+import { useIdleTimer } from '@/lib/hooks';
 
 export default function Home() {
   const [user, setUser] = useState(null);
@@ -135,6 +137,14 @@ export default function Home() {
     await supabase.auth.signOut();
   };
 
+  // Automação: Desconexão por Ociosidade (Padrão 30 minutos)
+  useIdleTimer(() => {
+    if (user) {
+      console.log("[Sovereign Guard] Ociosidade detectada. Desconectando...");
+      handleLogout();
+    }
+  }, 30 * 60 * 1000);
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-[var(--bg-main)]">
@@ -208,7 +218,10 @@ export default function Home() {
           {activeView === 'settings' && (
             <SettingsView user={user} />
           )}
-          {!['dashboard', 'calendar', 'analytics', 'goals', 'settings', 'expenses', 'savings', 'debts'].includes(activeView) && (
+          {activeView === 'support' && (
+            <SupportView user={user} />
+          )}
+          {!['dashboard', 'calendar', 'analytics', 'goals', 'settings', 'support', 'expenses', 'savings', 'debts'].includes(activeView) && (
             <div className="flex flex-col items-center justify-center h-full space-y-4 animate-fade-in opacity-50">
               <div className="p-8 rounded-full bg-white/5 border border-white/10">
                 <LayoutDashboard size={48} className="text-[var(--accent)]" />

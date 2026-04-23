@@ -17,9 +17,14 @@ export function LocaleProvider({ children }) {
     }
   }, []);
 
-  const changeLocale = (newLocale) => {
+  const changeLocale = async (newLocale, userId = null) => {
     setLocale(newLocale);
     localStorage.setItem('locale', newLocale);
+    
+    if (userId) {
+      const { updateUserCurrency } = await import('@/lib/db');
+      await updateUserCurrency(userId, newLocale);
+    }
   };
 
   const t = locales[locale] || locales['pt-BR'];
