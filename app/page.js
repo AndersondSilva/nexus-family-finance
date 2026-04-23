@@ -119,17 +119,29 @@ export default function Home() {
     document.documentElement.setAttribute('data-theme', newTheme);
   };
 
-  const handleLogin = async (providerName) => {
+  const handleLogin = async (providerName, email = null) => {
     try {
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: providerName === 'google' ? 'google' : (providerName === 'apple' ? 'apple' : 'azure'),
-        options: {
-          redirectTo: window.location.origin
-        }
-      });
-      if (error) throw error;
+      if (providerName === 'email') {
+        const { error } = await supabase.auth.signInWithOtp({
+          email,
+          options: {
+            emailRedirectTo: window.location.origin
+          }
+        });
+        if (error) throw error;
+        alert("Link mágico enviado! Verifique seu e-mail.");
+      } else {
+        const { error } = await supabase.auth.signInWithOAuth({
+          provider: providerName === 'google' ? 'google' : (providerName === 'apple' ? 'apple' : 'azure'),
+          options: {
+            redirectTo: window.location.origin
+          }
+        });
+        if (error) throw error;
+      }
     } catch (error) {
       console.error("Login failed:", error);
+      alert(`Erro de Autenticação: ${error.message || 'Provedor não habilitado no Supabase.'}`);
     }
   };
 
