@@ -10,9 +10,9 @@ export default function LoginScreen({ onLogin, theme, toggleTheme }) {
       
       {/* Navbar Minimalista */}
       <nav className="w-full max-w-7xl flex justify-between items-center z-50 mb-20 animate-fade-in">
-        <div className="flex items-center gap-2">
-          <img src="/logo.png" alt="Nexus Logo" className="w-10 h-10 object-contain" />
-          <span className="text-lg font-bold tracking-tight font-heading uppercase text-white">NEXUS</span>
+        <div className="flex items-center gap-2 md:gap-4">
+          <img src="/logo.png" alt="Nexus Logo" className="w-16 h-16 md:w-20 md:h-20 object-contain" />
+          <span className="text-2xl md:text-4xl font-bold tracking-tight font-heading uppercase text-white">NEXUS</span>
         </div>
         <div className="flex items-center gap-4">
           <button 

@@ -22,9 +22,9 @@ export default function Sidebar({ user, onLogout, activeView, setActiveView }) {
 
   return (
     <aside className="hidden lg:flex flex-col w-80 glass m-6 border-none p-8 z-20 shadow-2xl overflow-y-auto">
-      <div className="flex items-center gap-3 mb-12 px-2">
-        <img src="/logo.png" alt="Nexus Logo" className="w-12 h-12 object-contain" />
-        <span className="text-2xl font-bold tracking-tight font-heading text-white">NEXUS</span>
+      <div className="flex items-center gap-3 md:gap-4 mb-12 px-2">
+        <img src="/logo.png" alt="Nexus Logo" className="w-20 h-20 lg:w-24 lg:h-24 object-contain" />
+        <span className="text-4xl lg:text-5xl font-bold tracking-tight font-heading text-white">NEXUS</span>
       </div>
 
       <div className="space-y-1">
